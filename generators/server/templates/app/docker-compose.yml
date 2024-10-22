@@ -1,8 +1,6 @@
-version: '3.8'
 services:
-
 <%_ if (databaseType === 'postgresql') { _%>
-  postgresqldb:
+  postgresql:
     image: <%= POSTGRESQL_IMAGE %>
     environment:
       - POSTGRES_USER=appuser
@@ -12,7 +10,7 @@ services:
       - "5432:5432"
 <%_ } _%>
 <%_ if (databaseType === 'mysql') { _%>
-  mysqldb:
+  mysql:
     image: <%= MYSQL_IMAGE %>
     environment:
       - MYSQL_DATABASE=appdb

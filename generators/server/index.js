@@ -187,8 +187,7 @@ module.exports = class extends BaseGenerator {
             'config/ApplicationProperties.java',
             'config/Initializer.java',
             'config/GlobalExceptionHandler.java',
-            'config/logging/Loggable.java',
-            'config/logging/LoggingAspect.java',
+            'config/aop/LoggingAspect.java',
             'exception/ResourceNotFoundException.java',
             'model/response/PagedResult.java',
             'utils/AppConstants.java'
@@ -196,8 +195,7 @@ module.exports = class extends BaseGenerator {
         this.generateMainJavaCode(configOptions, mainJavaTemplates);
 
         const mainResTemplates = [
-            'application.properties',
-            'application-local.properties',
+            'application.yml',
             'logback-spring.xml'
         ];
         this.generateMainResCode(configOptions, mainResTemplates);
@@ -215,7 +213,7 @@ module.exports = class extends BaseGenerator {
         this.generateTestJavaCode(configOptions, testJavaTemplates);
 
         const testResTemplates = [
-            'application-test.properties',
+            'application-test.yml',
             'logback-test.xml'
         ];
         this.generateTestResCode(configOptions, testResTemplates);
@@ -263,7 +261,7 @@ module.exports = class extends BaseGenerator {
 
     _generateDockerComposeFiles(configOptions) {
         this._generateAppDockerComposeFile(configOptions);
-        if(configOptions.features.includes('monitoring')) {
+        if(configOptions.features.includes('monitor')) {
             this._generateMonitoringConfig(configOptions);
         }
         if(configOptions.features.includes('elk')) {
@@ -275,28 +273,29 @@ module.exports = class extends BaseGenerator {
         const resTemplates = [
             'docker-compose.yml',
             'docker-compose-app.yml',
+            'docker-compose-sonar.yml'
         ];
-        this.generateFiles(configOptions, resTemplates, 'app/','docker/');
+        this.generateFiles(configOptions, resTemplates, 'app/','./');
     }
 
     _generateELKConfig(configOptions) {
         const resTemplates = [
-            'docker/docker-compose-elk.yml',
-            'config/elk/logstash.conf',
+            'docker-compose-elk.yml',
+            'docker/elk/logstash.conf',
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
     }
 
     _generateMonitoringConfig(configOptions) {
         const resTemplates = [
-            'docker/docker-compose-monitoring.yml',
-            'config/prometheus/prometheus.yml',
+            'docker-compose-monitor.yml',
+            'docker/prometheus/prometheus.yml',
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
 
         this.fs.copy(
-            this.templatePath('app/config/grafana'),
-            this.destinationPath('config/grafana')
+            this.templatePath('app/docker/grafana'),
+            this.destinationPath('docker/grafana')
         );
     }
 

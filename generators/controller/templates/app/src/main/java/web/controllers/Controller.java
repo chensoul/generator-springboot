@@ -37,10 +37,10 @@ class <%= entityName %>Controller {
     @GetMapping
     PagedResult<<%= entityName %>Response> getAll<%= entityName %>s(
             @RequestParam(
-                value = "pageNo",
+                value = "pageNumber",
                 defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,
                 required = false)
-            int pageNo,
+            int pageNumber,
             @RequestParam(
                         value = "pageSize",
                         defaultValue = AppConstants.DEFAULT_PAGE_SIZE,
@@ -58,7 +58,7 @@ class <%= entityName %>Controller {
                 String sortDir
                 ) {
         Find<%= entityName %>sQuery find<%= entityName %>sQuery =
-                new Find<%= entityName %>sQuery(pageNo, pageSize, sortBy, sortDir);
+                new Find<%= entityName %>sQuery(pageNumber, pageSize, sortBy, sortDir);
         return <%= entityVarName %>Service.findAll<%= entityName %>s(find<%= entityName %>sQuery);
     }
 

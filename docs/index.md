@@ -65,7 +65,7 @@ Generating SpringBoot Application
    create blog/src/main/resources/db/migration/postgresql/V1__01_init.sql
    create blog/docker/docker-compose.yml
    create blog/docker/docker-compose-app.yml
-   create blog/docker/docker-compose-monitoring.yml
+   create blog/docker/docker-compose-monitor.yml
    create blog/config/prometheus/prometheus.yml
    create blog/config/grafana/provisioning/dashboards/basic-dashboard.json
    create blog/config/grafana/provisioning/dashboards/dashboard.yml
@@ -84,7 +84,6 @@ Generating SpringBoot Application
    create blog/src/main/java/com/sivalabs/blog/config/logging/LoggingAspect.java
    create blog/src/main/java/com/sivalabs/blog/utils/AppConstants.java
    create blog/src/main/resources/application.properties
-   create blog/src/main/resources/application-local.properties
    create blog/src/main/resources/logback-spring.xml
    create blog/src/test/java/com/sivalabs/blog/ApplicationIntegrationTest.java
    create blog/src/test/java/com/sivalabs/blog/SchemaValidationTest.java

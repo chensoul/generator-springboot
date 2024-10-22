@@ -65,7 +65,7 @@ Generating SpringBoot Application
    create blog/src/main/resources/db/migration/postgresql/V1__01_init.sql
    create blog/docker/docker-compose.yml
    create blog/docker/docker-compose-app.yml
-   create blog/docker/docker-compose-monitoring.yml
+   create blog/docker/docker-compose-monitor.yml
    create blog/config/prometheus/prometheus.yml
    create blog/config/grafana/provisioning/dashboards/basic-dashboard.json
    create blog/config/grafana/provisioning/dashboards/dashboard.yml

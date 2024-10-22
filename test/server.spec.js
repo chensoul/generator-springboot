@@ -77,16 +77,16 @@ describe('SpringBoot Generator', () => {
                     "databaseType": "postgresql",
                     "dbMigrationTool": "flywaydb",
                     "buildTool": "maven",
-                    "features": ["elk", "monitoring"]
+                    "features": ["elk", "monitor"]
                 })
                 .on('end', done);
         });
 
         it('creates expected default files for complete microservice with maven', () => {
             assert.file('myservice/pom.xml');
-            assert.file('myservice/docker/docker-compose.yml');
-            assert.file('myservice/docker/docker-compose-elk.yml');
-            assert.file('myservice/docker/docker-compose-monitoring.yml');
+            assert.file('myservice/docker-compose.yml');
+            assert.file('myservice/docker-compose-elk.yml');
+            assert.file('myservice/docker-compose-monitor.yml');
         });
     });
 
@@ -163,16 +163,16 @@ describe('SpringBoot Generator', () => {
                     "databaseType": "postgresql",
                     "dbMigrationTool": "flywaydb",
                     "buildTool": "gradle",
-                    "features": ["elk", "monitoring"]
+                    "features": ["elk", "monitor"]
                 })
                 .on('end', done);
         });
 
         it('creates expected default files for complete microservice with Gradle', () => {
             assert.file('myservice/build.gradle');
-            assert.file('myservice/docker/docker-compose.yml');
-            assert.file('myservice/docker/docker-compose-elk.yml');
-            assert.file('myservice/docker/docker-compose-monitoring.yml');
+            assert.file('myservice/docker-compose.yml');
+            assert.file('myservice/docker-compose-elk.yml');
+            assert.file('myservice/docker-compose-monitor.yml');
         });
     });
 });

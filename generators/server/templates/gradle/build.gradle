@@ -75,7 +75,7 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
     implementation "org.apache.commons:commons-lang3"
     implementation "commons-io:commons-io:${commons_io_version}"
-    <%_ if (features.includes("monitoring")) { _%>
+    <%_ if (features.includes("monitor")) { _%>
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"
     <%_ } _%>
 
@@ -125,12 +125,6 @@ bootBuildImage {
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo
 
-if (project.hasProperty("local")) {
-    bootRun {
-        args = ["--spring.profiles.active=local"]
-    }
-}
-
 gitProperties {
     failOnNoGitDirectory = false
     keys = [
@@ -179,12 +173,10 @@ check.dependsOn integrationTest
 check.dependsOn jacocoTestReport
 
 tasks.register('testReport', TestReport) {
-    destinationDirectory = file("$buildDir/reports/tests")
     testResults.from(test)
 }
 
 tasks.register('integrationTestReport', TestReport) {
-    destinationDirectory = file("$buildDir/reports/tests")
     testResults.from(integrationTest)
 }
 

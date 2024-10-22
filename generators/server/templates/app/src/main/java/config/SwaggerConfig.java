@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
 @OpenAPIDefinition(
-        info = @Info(title = "<%= appName %>", version = "v1"),
+        info = @Info(title = "<%= appName %>", version = "<%= DEFAULT_APP_VERSION %>"),
         servers = @Server(url = "/"))
 class SwaggerConfig {}

@@ -99,7 +99,7 @@ function prompting() {
                     name: 'ELK Docker configuration'
                 },
                 {
-                    value: 'monitoring',
+                    value: 'monitor',
                     name: 'Prometheus, Grafana Docker configuration'
                 },
                 {

@@ -6,7 +6,7 @@
 
     <%_ if (features.includes('elk')) { _%>
     <springProperty defaultValue="localhost" name="logstashHost"
-    scope="context" source="application.logstash-host"/>
+    scope="context" source="application.logstash.host"/>
 
     <appender class="net.logstash.logback.appender.LogstashTcpSocketAppender" name="stash">
         <!--<destination>localhost:5000</destination>-->
@@ -23,9 +23,7 @@
                 <pattern>
                     <pattern>
                         {
-                        <!-- we can add some custom fields to be sent with all the log entries.-->
-                        <!--make filtering easier in Logstash-->
-                        "app-name": ${spring.application.name}
+                        "app-name": ${appName}
                         }
                     </pattern>
                 </pattern>
