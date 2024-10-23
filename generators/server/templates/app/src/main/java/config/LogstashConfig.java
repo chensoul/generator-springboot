@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
  * Copy from jhipster
  */
 @Configuration
-@ConditionalOnClass({LogstashTcpSocketAppender.class, ObjectMapper.class})
 public class LogstashConfig {
     @Value("${spring.application.name}")
     String appName;

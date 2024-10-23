@@ -301,6 +301,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <additionalProperties>
+                        <java.version>${java.version}</java.version>
+                    </additionalProperties>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>

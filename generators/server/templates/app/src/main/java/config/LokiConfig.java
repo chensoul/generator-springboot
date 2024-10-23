@@ -15,7 +15,6 @@ import org.springframework.core.env.Environment;
 
 @Slf4j
 @Configuration
-@ConditionalOnClass(Loki4jAppender.class)
 public class LokiConfig {
 
     public LokiConfig(ApplicationProperties properties, Environment environment) {
