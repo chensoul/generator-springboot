@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 <%_ } _%>
 import java.util.Objects;
+
 <%_ if (persistenceType === 'jpa') { _%>
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
