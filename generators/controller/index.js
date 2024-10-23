@@ -60,22 +60,22 @@ module.exports = class extends BaseGenerator {
 
     _generateAppCode(configOptions) {
         const mainJavaTemplates = [
-            {src: 'entities/Entity.java', dest: 'entities/'+configOptions.entityName+'.java'},
+            {src: 'entity/Entity.java', dest: 'entity/'+configOptions.entityName+'.java'},
             {src: 'exception/NotFoundException.java', dest: 'exception/'+configOptions.entityName+'NotFoundException.java'},
             {src: 'mapper/Mapper.java', dest: 'mapper/'+configOptions.entityName+'Mapper.java'},
-            {src: 'model/query/FindQuery.java', dest: 'model/query/Find'+configOptions.entityName+'sQuery.java'},
+            {src: 'model/query/FindQuery.java', dest: 'model/query/Find'+configOptions.entityName+'Query.java'},
             {src: 'model/request/Request.java', dest: 'model/request/'+configOptions.entityName+'Request.java'},
             {src: 'model/response/Response.java', dest: 'model/response/'+configOptions.entityName+'Response.java'},
-            {src: 'repositories/Repository.java', dest: 'repositories/'+configOptions.entityName+'Repository.java'},
-            {src: 'services/Service.java', dest: 'services/'+configOptions.entityName+'Service.java'},
-            {src: 'web/controllers/Controller.java', dest: 'web/controllers/'+configOptions.entityName+'Controller.java'},
+            {src: 'repository/Repository.java', dest: 'repository/'+configOptions.entityName+'Repository.java'},
+            {src: 'service/Service.java', dest: 'service/'+configOptions.entityName+'Service.java'},
+            {src: 'web/controller/Controller.java', dest: 'web/controller/'+configOptions.entityName+'Controller.java'},
         ];
         this.generateMainJavaCode(configOptions, mainJavaTemplates);
 
         const testJavaTemplates = [
-            {src: 'web/controllers/ControllerTest.java', dest: 'web/controllers/'+configOptions.entityName+'ControllerTest.java'},
-            {src: 'web/controllers/ControllerIT.java', dest: 'web/controllers/'+configOptions.entityName+'ControllerIT.java'},
-            {src: 'services/ServiceTest.java', dest: 'services/'+configOptions.entityName+'ServiceTest.java'},
+            {src: 'web/controller/ControllerTest.java', dest: 'web/controller/'+configOptions.entityName+'ControllerTest.java'},
+            {src: 'web/controller/ControllerIT.java', dest: 'web/controller/'+configOptions.entityName+'ControllerIT.java'},
+            {src: 'service/ServiceTest.java', dest: 'service/'+configOptions.entityName+'ServiceTest.java'},
         ];
         this.generateTestJavaCode(configOptions, testJavaTemplates);
     }

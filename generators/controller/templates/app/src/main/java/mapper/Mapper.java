@@ -1,6 +1,6 @@
 package <%= packageName %>.mapper;
 
-import <%= packageName %>.entities.<%= entityName %>;
+import <%= packageName %>.entity.<%= entityName %>;
 import <%= packageName %>.model.request.<%= entityName %>Request;
 import <%= packageName %>.model.response.<%= entityName %>Response;
 import java.util.List;

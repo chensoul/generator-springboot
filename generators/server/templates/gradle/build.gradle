@@ -36,21 +36,17 @@ repositories {
 }
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-web"
-    developmentOnly "org.springframework.boot:spring-boot-devtools"
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    compileOnly "org.projectlombok:lombok"
-    annotationProcessor "org.projectlombok:lombok"
-    <%_ if (features.includes("localstack")) { _%>
-    implementation "io.awspring.cloud:spring-cloud-aws-starter"
-    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    <%_ if (persistenceType === 'jpa') { _%>
+     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     <%_ } _%>
-    <%_ if (features.includes("elk")) { _%>
-    implementation "net.logstash.logback:logstash-logback-encoder:${logstash_logback_encoder_version}"
+
+    <%_ if (persistenceType === 'mybatis-plus') { _%>
+    implementation "com.baomidou:mybatis-plus-spring-boot3-starter"
     <%_ } _%>
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
     <%_ if (databaseType === "mysql") { _%>
     runtimeOnly "com.mysql:mysql-connector-j"
     <%_ } _%>
@@ -72,12 +68,34 @@ dependencies {
     <%_ if (dbMigrationTool === "liquibase") { _%>
     implementation "org.liquibase:liquibase-core"
     <%_ } _%>
+
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
     implementation "org.apache.commons:commons-lang3"
     implementation "commons-io:commons-io:${commons_io_version}"
+
+    <%_ if (features.includes("localstack")) { _%>
+    implementation "io.awspring.cloud:spring-cloud-aws-starter"
+    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
+    <%_ } _%>
+    <%_ if (loggingType === "elk") { _%>
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstash_logback_encoder_version}"
+    <%_ } _%>
+    <%_ if (loggingType === 'loki') { _%>
+    implementation "com.github.loki4j:loki-logback-appender:${loki_logback_appender_version}"
+    <%_ } _%>
     <%_ if (features.includes("monitor")) { _%>
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"
     <%_ } _%>
+    <%_ if (traceType === 'zipkin' ) { _%>
+    implementation "io.opentelemetry:opentelemetry-exporter-zipkin"
+    implementation "io.micrometer:micrometer-tracing-bridge-brave"
+    implementation "io.zipkin.reporter2:zipkin-reporter-brave"
+    <%_ } _%>
+
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-testcontainers"
@@ -102,6 +120,9 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}"
+        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        mavenBom "com.baomidou:mybatis-plus-bom:${mybatis_plus_version}"
+        <%_ } _%>
         <%_ if (features.includes("localstack")) { _%>
         mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${spring_cloud_aws_version}"
         <%_ } _%>

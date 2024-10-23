@@ -1,6 +1,9 @@
-package <%= packageName %>.web.controllers;
+package <%= packageName %>.web.controller;
 
-import static <%= packageName %>.utils.AppConstants.PROFILE_TEST;
+<%_ if (persistenceType === 'mybatis-plus') { _%>
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<%_ } _%>
+import static <%= packageName %>.util.AppConstants.PROFILE_TEST;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
@@ -17,13 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import <%= packageName %>.entities.<%= entityName %>;
+import <%= packageName %>.entity.<%= entityName %>;
 import <%= packageName %>.exception.<%= entityName %>NotFoundException;
-import <%= packageName %>.model.query.Find<%= entityName %>sQuery;
+import <%= packageName %>.model.query.Find<%= entityName %>Query;
 import <%= packageName %>.model.request.<%= entityName %>Request;
 import <%= packageName %>.model.response.<%= entityName %>Response;
 import <%= packageName %>.model.response.PagedResult;
-import <%= packageName %>.services.<%= entityName %>Service;
+import <%= packageName %>.service.<%= entityName %>Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +35,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+<%_ if (persistenceType === 'jpa') { _%>
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+<%_ } _%>
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -61,11 +66,16 @@ class <%= entityName %>ControllerTest {
 
     @Test
     void shouldFetchAll<%= entityName %>s() throws Exception {
-
+        <%_ if (persistenceType === 'jpa') { _%>
         Page<<%= entityName %>> page = new PageImpl<>(<%= entityVarName %>List);
+        <%_ } _%>
+        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        Page<<%= entityName %>> page = new Page<>(0, 10, 3);
+        page.setRecords(<%= entityVarName %>List);
+        <%_ } _%>
         PagedResult<<%= entityName %>Response> <%= entityVarName %>PagedResult = new PagedResult<>(page, get<%= entityName %>ResponseList());
-        Find<%= entityName %>sQuery find<%= entityName %>sQuery = new Find<%= entityName %>sQuery(0, 10, "id", "asc");
-        given(<%= entityVarName %>Service.findAll<%= entityName %>s(find<%= entityName %>sQuery)).willReturn(<%= entityVarName %>PagedResult);
+        Find<%= entityName %>Query find<%= entityName %>Query = new Find<%= entityName %>Query(0, 10, "id", "asc");
+        given(<%= entityVarName %>Service.findAll<%= entityName %>s(find<%= entityName %>Query)).willReturn(<%= entityVarName %>PagedResult);
 
         this.mockMvc
                 .perform(get("<%= basePath %>"))

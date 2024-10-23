@@ -6,7 +6,8 @@
     "databaseType": "postgresql",
     "dbMigrationTool": "liquibase",
     "dbMigrationFormat": "xml",
-    "features": ["elk"],
+    "features": ["monitor"],
+    "loggingType": "elk",
     "buildTool": "maven",
     "liquibaseMigrationCounter": 1
   }

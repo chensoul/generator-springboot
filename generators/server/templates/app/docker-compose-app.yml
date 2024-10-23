@@ -22,7 +22,15 @@ services:
       <%_ } _%>
       - SPRING_DATASOURCE_USERNAME=appuser
       - SPRING_DATASOURCE_PASSWORD=secret
-      <%_ if (features.includes('elk')) { _%>
+      <%_ if (loggingType === 'elk' ) { _%>
       - APPLICATION_LOGSTASH_HOST=logstash
       <%_ } _%>
-
+      <%_ if (loggingType === 'loki' ) { _%>
+      - APPLICATION_LOKI_URL=http://loki:3100/loki/api/v1/push
+      <%_ } _%>
+      <%_ if (traceType === 'zipkin') { _%>
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411/api/v2/spans
+      <%_ } _%>
+      <%_ if (traceType === 'tempo') { _%>
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411/api/v2/spans
+      <%_ } _%>

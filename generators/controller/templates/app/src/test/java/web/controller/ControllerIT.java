@@ -1,5 +1,8 @@
-package <%= packageName %>.web.controllers;
+package <%= packageName %>.web.controller;
 
+<%_ if (persistenceType === 'mybatis-plus') { _%>
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+<%_ } _%>
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.hasSize;
@@ -12,9 +15,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import <%= packageName %>.common.AbstractIntegrationTest;
-import <%= packageName %>.entities.<%= entityName %>;
+import <%= packageName %>.entity.<%= entityName %>;
 import <%= packageName %>.model.request.<%= entityName %>Request;
-import <%= packageName %>.repositories.<%= entityName %>Repository;
+import <%= packageName %>.repository.<%= entityName %>Repository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,13 +34,23 @@ class <%= entityName %>ControllerIT extends AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        <%_ if (persistenceType === 'jpa') { _%>
         <%= entityVarName %>Repository.deleteAllInBatch();
+        <%_ } _%>
+        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%= entityVarName %>Repository.delete(Wrappers.query());
+        <%_ } _%>
 
         <%= entityVarName %>List = new ArrayList<>();
         <%= entityVarName %>List.add(new <%= entityName %>(null, "First <%= entityName %>"));
         <%= entityVarName %>List.add(new <%= entityName %>(null, "Second <%= entityName %>"));
         <%= entityVarName %>List.add(new <%= entityName %>(null, "Third <%= entityName %>"));
+        <%_ if (persistenceType === 'jpa') { _%>
         <%= entityVarName %>List = <%= entityVarName %>Repository.saveAll(<%= entityVarName %>List);
+        <%_ } _%>
+        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%= entityVarName %>Repository.insert(<%= entityVarName %>List);
+        <%_ } _%>
     }
 
     @Test

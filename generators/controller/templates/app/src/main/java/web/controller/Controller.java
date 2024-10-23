@@ -1,12 +1,12 @@
-package <%= packageName %>.web.controllers;
+package <%= packageName %>.web.controller;
 
 import <%= packageName %>.exception.<%= entityName %>NotFoundException;
-import <%= packageName %>.model.query.Find<%= entityName %>sQuery;
+import <%= packageName %>.model.query.Find<%= entityName %>Query;
 import <%= packageName %>.model.request.<%= entityName %>Request;
 import <%= packageName %>.model.response.<%= entityName %>Response;
 import <%= packageName %>.model.response.PagedResult;
-import <%= packageName %>.services.<%= entityName %>Service;
-import <%= packageName %>.utils.AppConstants;
+import <%= packageName %>.service.<%= entityName %>Service;
+import <%= packageName %>.util.AppConstants;
 import java.util.List;
 import java.net.URI;
 import jakarta.validation.Valid;
@@ -57,9 +57,9 @@ class <%= entityName %>Controller {
                         required = false)
                 String sortDir
                 ) {
-        Find<%= entityName %>sQuery find<%= entityName %>sQuery =
-                new Find<%= entityName %>sQuery(pageNumber, pageSize, sortBy, sortDir);
-        return <%= entityVarName %>Service.findAll<%= entityName %>s(find<%= entityName %>sQuery);
+        Find<%= entityName %>Query find<%= entityName %>Query =
+                new Find<%= entityName %>Query(pageNumber, pageSize, sortBy, sortDir);
+        return <%= entityVarName %>Service.findAll<%= entityName %>s(find<%= entityName %>Query);
     }
 
     @GetMapping("/{id}")

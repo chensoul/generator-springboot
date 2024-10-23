@@ -1,6 +1,6 @@
-create sequence <%= tableName %>_seq start with 1 increment by 50;
+create sequence IF NOT EXISTS <%= tableName %>_seq start with 1 increment by 50;
 
-create table <%= tableName %> (
+create tableIF NOT EXISTS  <%= tableName %> (
     <%_ if (databaseType != 'mariadb') { _%>
     id bigint DEFAULT nextval('<%= tableName %>_seq') not null,
     <%_ } _%>

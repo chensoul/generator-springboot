@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -25,15 +26,15 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ProblemDetail onException(MethodArgumentNotValidException exception) {
-        log.error("An unexpected error occurred", exception);
+    ProblemDetail onException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        log.error("request {} occur exception: {}", request.getRequestURI(), ex.getMessage(), ex);
 
         ProblemDetail problemDetail =
                 ProblemDetail.forStatusAndDetail(
                         HttpStatusCode.valueOf(400), "Invalid request content.");
         problemDetail.setTitle("Constraint Violation");
         List<ApiValidationError> validationErrorsList =
-                exception.getAllErrors().stream()
+                ex.getAllErrors().stream()
                         .map(
                                 objectError -> {
                                     FieldError fieldError = (FieldError) objectError;
@@ -50,10 +51,10 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    ProblemDetail onException(Exception exception) {
-        log.error("An unexpected error occurred", exception);
+    ProblemDetail onException(Exception ex, HttpServletRequest request) {
+        log.error("request {} occur exception: {}", request.getRequestURI(), ex.getMessage(), ex);
 
-        if (exception instanceof ResourceNotFoundException resourceNotFoundException) {
+        if (ex instanceof ResourceNotFoundException resourceNotFoundException) {
                 ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                         resourceNotFoundException.getHttpStatus(), resourceNotFoundException.getMessage());
                 problemDetail.setTitle("Not Found");
@@ -62,7 +63,7 @@ class GlobalExceptionHandler {
                 problemDetail.setProperty("timestamp", Instant.now());
                 return problemDetail;
         } else {
-            return ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
+            return ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), ex.getMessage());
         }
     }
 

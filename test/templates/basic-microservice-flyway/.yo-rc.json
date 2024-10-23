@@ -6,6 +6,7 @@
     "databaseType": "postgresql",
     "dbMigrationTool": "flywaydb",
     "features": [],
+    "loggingType": "elk",
     "buildTool": "maven",
     "flywayMigrationCounter": 1
   }

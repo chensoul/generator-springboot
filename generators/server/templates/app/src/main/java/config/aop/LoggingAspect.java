@@ -1,6 +1,6 @@
 package <%= packageName %>.config.aop;
 
-import <%= packageName %>.utils.AppConstants;
+import <%= packageName %>.util.AppConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

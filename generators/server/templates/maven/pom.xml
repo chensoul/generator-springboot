@@ -20,11 +20,17 @@
     <properties>
         <java.version><%= JAVA_VERSION %></java.version>
         <spring-cloud.version><%= SPRING_CLOUD_VERSION %></spring-cloud.version>
+        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <mybatis-plus.version>3.5.8</mybatis-plus.version>
+        <%_ } _%>
         <%_ if (features.includes('localstack')) { _%>
         <spring-cloud-aws.version><%= SPRING_CLOUD_AWS_VERSION %></spring-cloud-aws.version>
         <%_ } _%>
-        <%_ if (features.includes('elk')) { _%>
+        <%_ if (loggingType === 'elk' ) { _%>
         <logstash-logback-encoder.version><%= LOGSTASH_LOGBACK_ENCODER %></logstash-logback-encoder.version>
+        <%_ } _%>
+        <%_ if (loggingType === 'loki') { _%>
+        <loki-logback-appender.version><%= LOKI_LOGBACK_APPENDER %></loki-logback-appender.version>
         <%_ } _%>
         <springdoc-openapi.version><%= SPRINGDOC_OPENAPI_VERSION %></springdoc-openapi.version>
         <commons-io.version><%= COMMONS_IO_VERSION %></commons-io.version>
@@ -58,8 +64,21 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <%_ if (persistenceType === 'jpa') { _%>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <%_ } _%>
+        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        </dependency>
+        <%_ } _%>
 
         <!-- Database -->
         <%_ if (databaseType === 'postgresql') { _%>
@@ -108,37 +127,6 @@
         </dependency>
         <%_ } _%>
 
-        <%_ if (features.includes('localstack')) { _%>
-        <!-- AWS -->
-        <dependency>
-            <groupId>io.awspring.cloud</groupId>
-            <artifactId>spring-cloud-aws-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.awspring.cloud</groupId>
-            <artifactId>spring-cloud-aws-starter-sqs</artifactId>
-        </dependency>
-        <%_ } _%>
-
-        <%_ if (features.includes('elk')) { _%>
-        <!-- ELK -->
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>${logstash-logback-encoder.version}</version>
-        </dependency>
-        <%_ } _%>
-
-        <%_ if (features.includes('monitor')) { _%>
-        <!-- Monitor -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <%_ } _%>
-
-        <!-- Other -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -154,7 +142,53 @@
             <version>${commons-io.version}</version>
         </dependency>
 
-        <!-- Runtime -->
+        <%_ if (features.includes('localstack')) { _%>
+        <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.awspring.cloud</groupId>
+            <artifactId>spring-cloud-aws-starter-sqs</artifactId>
+        </dependency>
+        <%_ } _%>
+
+        <%_ if (loggingType === 'elk') { _%>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+        </dependency>
+        <%_ } _%>
+        <%_ if (loggingType === 'loki') { _%>
+        <dependency>
+            <groupId>com.github.loki4j</groupId>
+            <artifactId>loki-logback-appender</artifactId>
+            <version>${loki-logback-appender.version}</version>
+        </dependency>
+        <%_ } _%>
+        <%_ if (features.includes('monitor')) { _%>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <%_ } _%>
+        <%_ if (traceType === 'zipkin' ) { _%>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-zipkin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
+        </dependency>
+        <%_ } _%>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -232,6 +266,17 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <%_ if (persistenceType === 'mybatis-plus') { _%>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-bom</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <%_ } _%>
+
             <%_ if (features.includes('localstack')) { _%>
             <dependency>
                 <groupId>io.awspring.cloud</groupId>

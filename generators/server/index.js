@@ -83,7 +83,6 @@ module.exports = class extends BaseGenerator {
 
     _generateMiscFiles(configOptions) {
         this.fs.copyTpl(this.templatePath('app/lombok.config'), this.destinationPath('lombok.config'), configOptions);
-        this.fs.copyTpl(this.templatePath('app/sonar-project.properties'), this.destinationPath('sonar-project.properties'), configOptions);
         this.fs.copyTpl(this.templatePath('app/README.md'), this.destinationPath('README.md'), configOptions);
     }
 
@@ -105,6 +104,7 @@ module.exports = class extends BaseGenerator {
     _generateGradleConfig(configOptions) {
         this._copyGradleWrapper(configOptions);
         this._generateGradleBuildScript(configOptions);
+        this.fs.copyTpl(this.templatePath('app/sonar-project.properties'), this.destinationPath('sonar-project.properties'), configOptions);
     }
 
     _copyMavenWrapper(configOptions) {
@@ -183,6 +183,7 @@ module.exports = class extends BaseGenerator {
         const mainJavaTemplates = [
             'Application.java',
             'config/WebMvcConfig.java',
+            'config/JacksonConfig.java',
             'config/SwaggerConfig.java',
             'config/ApplicationProperties.java',
             'config/Initializer.java',
@@ -190,8 +191,27 @@ module.exports = class extends BaseGenerator {
             'config/aop/LoggingAspect.java',
             'exception/ResourceNotFoundException.java',
             'model/response/PagedResult.java',
-            'utils/AppConstants.java'
+            'util/AppConstants.java'
         ];
+
+        if(configOptions.loggingType === "elk") {
+            mainJavaTemplates.push('config/LogstashConfig.java');
+            mainJavaTemplates.push('util/LogstashUtils.java');
+        }
+
+        if(configOptions.loggingType === "loki") {
+            mainJavaTemplates.push('config/LokiConfig.java');
+        }
+
+        if(configOptions.features.includes("monitor")) {
+            mainJavaTemplates.push('config/MetricConfig.java');
+            mainJavaTemplates.push('util/AggravateMetricsEndpoint.java');
+        }
+
+        if(configOptions.databaseType === "mybatis-plus") {
+            mainJavaTemplates.push('config/MybatisPlusConfig.java');
+        }
+
         this.generateMainJavaCode(configOptions, mainJavaTemplates);
 
         const mainResTemplates = [
@@ -202,7 +222,6 @@ module.exports = class extends BaseGenerator {
 
         const testJavaTemplates = [
             'ApplicationIntegrationTest.java',
-            'SchemaValidationTest.java',
             'common/ContainersConfig.java',
             'common/AbstractIntegrationTest.java',
             'TestApplication.java'
@@ -210,6 +229,11 @@ module.exports = class extends BaseGenerator {
         if(configOptions.features.includes("localstack")) {
             testJavaTemplates.push('SqsListenerIntegrationTest.java');
         }
+
+        if(configOptions.databaseType === "jpa") {
+            mainJavaTemplates.push('SchemaValidationTest.java');
+        }
+
         this.generateTestJavaCode(configOptions, testJavaTemplates);
 
         const testResTemplates = [
@@ -264,8 +288,17 @@ module.exports = class extends BaseGenerator {
         if(configOptions.features.includes('monitor')) {
             this._generateMonitoringConfig(configOptions);
         }
-        if(configOptions.features.includes('elk')) {
+        if(configOptions.loggingType === 'elk') {
             this._generateELKConfig(configOptions);
+        }
+        if(configOptions.loggingType === 'loki') {
+            this._generateLokiConfig(configOptions);
+        }
+        if(configOptions.traceType === 'zipkin') {
+            this._generateZipkinConfig(configOptions);
+        }
+        if(configOptions.traceType === 'tempo') {
+            this._generateTempoConfig(configOptions);
         }
     }
 
@@ -282,6 +315,9 @@ module.exports = class extends BaseGenerator {
         const resTemplates = [
             'docker-compose-elk.yml',
             'docker/elk/logstash.conf',
+            'docker/elk/elasticsearch.yml',
+            'docker/elk/logstash.yml',
+            'docker/elk/kibana.yml',
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
     }
@@ -290,12 +326,40 @@ module.exports = class extends BaseGenerator {
         const resTemplates = [
             'docker-compose-monitor.yml',
             'docker/prometheus/prometheus.yml',
+            'docker/grafana/provisioning/datasources/datasource.yml',
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
 
         this.fs.copy(
-            this.templatePath('app/docker/grafana'),
-            this.destinationPath('docker/grafana')
+            this.templatePath('app/docker/grafana/provisioning/dashboards'),
+            this.destinationPath('docker/grafana/provisioning/dashboards')
+        );
+    }
+
+    _generateLokiConfig(configOptions) {
+        const resTemplates = [
+            'docker-compose-loki.yml'
+        ];
+        this.generateFiles(configOptions, resTemplates, 'app/','./');
+    }
+
+    _generateZipkinConfig(configOptions) {
+        const resTemplates = [
+            'docker-compose-zipkin.yml'
+        ];
+        this.generateFiles(configOptions, resTemplates, 'app/','./');
+    }
+
+    _generateTempoConfig(configOptions) {
+        const resTemplates = [
+            'docker-compose-tempo.yml',
+            'docker/tempo/tempo.yml',
+        ];
+        this.generateFiles(configOptions, resTemplates, 'app/','./');
+
+        this.fs.copy(
+            this.templatePath('app/docker/tempo'),
+            this.destinationPath('docker/tempo')
         );
     }
 

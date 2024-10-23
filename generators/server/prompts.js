@@ -69,6 +69,26 @@ function prompting() {
             default: 'flywaydb'
         },
         {
+            type: 'list',
+            name: 'persistenceType',
+            message: 'Which type of persistence framework you want to use?',
+            choices: [
+                {
+                    value: 'jpa',
+                    name: 'JPA'
+                },
+                {
+                    value: 'mybatis-plus',
+                    name: 'Mybatis Plus'
+                },
+                {
+                    value: 'none',
+                    name: 'None'
+                }
+            ],
+            default: 'jpa'
+        },
+        {
             when: (answers) => answers.dbMigrationTool === 'liquibase',
             type: 'list',
             name: 'dbMigrationFormat',
@@ -90,14 +110,50 @@ function prompting() {
             default: 'xml'
         },
         {
-            type: 'checkbox',
-            name: 'features',
-            message: 'Select the features you want?',
+            type: 'list',
+            name: 'loggingType',
+            message: 'Which type of logging tool you want to use?',
             choices: [
                 {
                     value: 'elk',
                     name: 'ELK Docker configuration'
                 },
+                {
+                    value: 'loki',
+                    name: 'Loki Docker configuration'
+                } ,
+                {
+                    value: 'none',
+                    name: 'None'
+                }
+            ],
+            default: 'elk'
+        },
+        {
+            type: 'list',
+            name: 'traceType',
+            message: 'Which type of trace tool you want to use?',
+            choices: [
+                {
+                    value: 'zipkin',
+                    name: 'Zipkin Docker configuration'
+                },
+                {
+                    value: 'tempo',
+                    name: 'Tempo Docker configuration'
+                } ,
+                {
+                    value: 'none',
+                    name: 'None'
+                }
+            ],
+            default: 'zipkin'
+        },
+        {
+            type: 'checkbox',
+            name: 'features',
+            message: 'Select the features you want?',
+            choices: [
                 {
                     value: 'monitor',
                     name: 'Prometheus, Grafana Docker configuration'
