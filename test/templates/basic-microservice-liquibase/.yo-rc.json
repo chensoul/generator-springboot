@@ -7,6 +7,7 @@
     "dbMigrationTool": "liquibase",
     "dbMigrationFormat": "xml",
     "features": ["monitor"],
+    "persistenceType": "jpa",
     "loggingType": "elk",
     "buildTool": "maven",
     "liquibaseMigrationCounter": 1

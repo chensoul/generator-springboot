@@ -5,7 +5,8 @@
     "packageFolder": "com/mycompany/myservice",
     "databaseType": "postgresql",
     "dbMigrationTool": "flywaydb",
-    "features": [],
+    "features": ["monitor"],
+    "persistenceType": "jpa",
     "loggingType": "elk",
     "buildTool": "maven",
     "flywayMigrationCounter": 1
