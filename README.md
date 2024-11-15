@@ -34,7 +34,7 @@ The generator-springboot generates a Spring Boot application with the following 
 * Dockerfile
 * Jenkinsfile
 * SonarQube and JaCoCo based static analysis tools configuration
-* Code formatting using Spotless and google-java-format 
+* Code formatting using Spotless Maven plugin 
 * JUnit 5
 
 ### Generate a SpringBoot Microservice
@@ -44,7 +44,7 @@ After installing the `generator-springboot`, you can generate a new Spring Boot 
 $ yo springboot
 Generating SpringBoot Application
 ? What is the application name? myservice
-? What is the default package name? com.mycompany.myservice
+? What is the default package name? com.mycompany
 ? Which type of database you want to use? Postgresql
 ? Which type of database migration tool you want to use? FlywayDB
 ? Which type of logging tool you want to use? ELK Docker configuration
@@ -60,13 +60,11 @@ Generating SpringBoot Application
    create myservice/pom.xml
    create myservice/Dockerfile
    create myservice/Jenkinsfile
-   create myservice/lombok.config
    create myservice/README.md
    create myservice/.github/workflows/maven.yml
    create myservice/src/main/resources/db/migration/postgresql/V1__01_init.sql
    create myservice/docker-compose.yml
    create myservice/docker-compose-app.yml
-   create myservice/docker-compose-sonar.yml
    create myservice/docker-compose-monitor.yml
    create myservice/docker/prometheus/prometheus.yml
    create myservice/docker/grafana/provisioning/datasources/datasource.yml
@@ -85,7 +83,7 @@ Generating SpringBoot Application
    create myservice/src/main/java/com/mycompany/myservice/Application.java
    create myservice/src/main/java/com/mycompany/myservice/config/WebMvcConfig.java
    create myservice/src/main/java/com/mycompany/myservice/config/JacksonConfig.java
-   create myservice/src/main/java/com/mycompany/myservice/config/SwaggerConfig.java
+   create myservice/src/main/java/com/mycompany/myservice/config/SpringdocConfig.java
    create myservice/src/main/java/com/mycompany/myservice/config/ApplicationProperties.java
    create myservice/src/main/java/com/mycompany/myservice/config/Initializer.java
    create myservice/src/main/java/com/mycompany/myservice/config/GlobalExceptionHandler.java
@@ -93,8 +91,6 @@ Generating SpringBoot Application
    create myservice/src/main/java/com/mycompany/myservice/exception/ResourceNotFoundException.java
    create myservice/src/main/java/com/mycompany/myservice/model/response/PagedResult.java
    create myservice/src/main/java/com/mycompany/myservice/util/AppConstants.java
-   create myservice/src/main/java/com/mycompany/myservice/config/LogstashConfig.java
-   create myservice/src/main/java/com/mycompany/myservice/util/LogstashUtils.java
    create myservice/src/main/java/com/mycompany/myservice/config/MetricConfig.java
    create myservice/src/main/java/com/mycompany/myservice/util/AggravateMetricsEndpoint.java
    create myservice/src/main/resources/application.yml
@@ -111,7 +107,7 @@ Generating SpringBoot Application
 No change to package.json was detected. No package manager install will be executed.
 [INFO] Scanning for projects...
 [INFO]
-[INFO] -----------------< com.mycompany.myservice:myservice >------------------
+[INFO] -----------------< com.mycompany:myservice >------------------
 [INFO] Building myservice 0.0.1-SNAPSHOT
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -124,11 +120,10 @@ No change to package.json was detected. No package manager install will be execu
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/test/java/com/mycompany/myservice/common/AbstractIntegrationTest.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/test/java/com/mycompany/myservice/common/ContainersConfig.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/util/AggravateMetricsEndpoint.java
-[INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/config/LogstashConfig.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/config/ApplicationProperties.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/config/GlobalExceptionHandler.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/config/aop/LoggingAspect.java
-[INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/config/SwaggerConfig.java
+[INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/config/SpringdocConfig.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/model/response/PagedResult.java
 [INFO] Writing clean file: /Users/chensoul/codes/github/generator-springboot/myservice/src/main/java/com/mycompany/myservice/exception/ResourceNotFoundException.java
 [INFO] Spotless.Java is keeping 21 files clean - 13 were changed to be clean, 8 were already clean, 0 were skipped because caching determined they were already clean
@@ -185,7 +180,7 @@ EntityName: Customer, basePath: /api/customers
 No change to package.json was detected. No package manager install will be executed.
 [INFO] Scanning for projects...
 [INFO]
-[INFO] -----------------< com.mycompany.myservice:myservice >------------------
+[INFO] -----------------< com.mycompany:myservice >------------------
 [INFO] Building myservice 0.0.1-SNAPSHOT
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------

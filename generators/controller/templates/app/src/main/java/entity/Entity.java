@@ -1,13 +1,13 @@
 package <%= packageName %>.entity;
 
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 <%_ } _%>
 import java.util.Objects;
 
-<%_ if (persistenceType === 'jpa') { _%>
+<%_ if (persistence === 'jpa') { _%>
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,11 +20,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-<%_ if (persistenceType === 'jpa') { _%>
+<%_ if (persistence === 'jpa') { _%>
 @Entity
 @Table(name = "<%= tableName %>")
 <%_ } _%>
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
 @TableName(value = "<%= tableName %>")
 <%_ } _%>
 @Getter
@@ -33,7 +33,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class <%= entityName %> {
 
-<%_ if (persistenceType === 'jpa') { _%>
+<%_ if (persistence === 'jpa') { _%>
     @Id
     <%_ if (!doesNotSupportDatabaseSequences) { _%>
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -42,15 +42,15 @@ public class <%= entityName %> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     <%_ } _%>
 <%_ } _%>
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
     @TableId
 <%_ } _%>
     private Long id;
 
-<%_ if (persistenceType === 'jpa') { _%>
+<%_ if (persistence === 'jpa') { _%>
     @Column(nullable = false)
 <%_ } _%>
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
     @TableField
 <%_ } _%>
     private String text;

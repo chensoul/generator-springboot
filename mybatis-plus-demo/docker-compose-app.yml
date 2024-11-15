@@ -1,0 +1,13 @@
+services:
+  myservice:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/appdb
+      - SPRING_DATASOURCE_USERNAME=appuser
+      - SPRING_DATASOURCE_PASSWORD=secret
+

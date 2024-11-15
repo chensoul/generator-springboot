@@ -7,7 +7,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
-import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsEndpointAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,11 +24,6 @@ public class MetricConfig {
         log.info("Initializing AggravateMetricsEndpoint");
 
         return new AggravateMetricsEndpoint(meterRegistry);
-    }
-
-    @Bean
-    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
-        return registry -> registry.config().commonTags("application", applicationName);
     }
 
     @Bean

@@ -9,6 +9,7 @@
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
+
     <springProfile name="!default">
         <property name="LOG_FILE" value="logs/${appName}/all.log"/>
         <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>

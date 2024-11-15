@@ -24,17 +24,17 @@ public class ContainersConfig {
     @Bean
     @ServiceConnection
     <%_ if (databaseType === 'postgresql') { _%>
-            PostgreSQLContainer<?> postgreSQLContainer() {
+    PostgreSQLContainer<?> postgreSQLContainer() {
         return new PostgreSQLContainer<>(DockerImageName.parse("<%= POSTGRESQL_IMAGE %>"));
     }
     <%_ } _%>
     <%_ if (databaseType === 'mysql') { _%>
-            MySQLContainer<?> sqlContainer () {
+    MySQLContainer<?> sqlContainer () {
         return new MySQLContainer<>(DockerImageName.parse("<%= MYSQL_IMAGE %>"));
     }
     <%_ } _%>
     <%_ if (databaseType === 'mariadb') { _%>
-            MariaDBContainer<?> sqlContainer () {
+    MariaDBContainer<?> sqlContainer () {
         return new MariaDBContainer<>(DockerImageName.parse("<%= MARIADB_IMAGE %>"));
     }
     <%_ } _%>

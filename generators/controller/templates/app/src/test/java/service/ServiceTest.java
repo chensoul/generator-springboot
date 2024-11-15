@@ -15,7 +15,7 @@ import <%= packageName %>.model.response.PagedResult;
 import <%= packageName %>.repository.<%= entityName %>Repository;
 import java.util.List;
 import java.util.Optional;
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
 import org.junit.jupiter.api.BeforeEach;
 <%_ } _%>
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
 import org.springframework.test.util.ReflectionTestUtils;
 <%_ } _%>
 
@@ -35,7 +35,7 @@ class <%= entityName %>ServiceTest {
 
     @InjectMocks private <%= entityName %>Service <%= entityVarName %>Service;
 
-    <%_ if (persistenceType === 'mybatis-plus') { _%>
+    <%_ if (persistence === 'mybatis-plus') { _%>
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(customerService, "baseMapper", customerRepository);
@@ -45,10 +45,10 @@ class <%= entityName %>ServiceTest {
     @Test
     void find<%= entityName %>ById() {
         // given
-        <%_ if (persistenceType === 'jpa') { _%>
+        <%_ if (persistence === 'jpa') { _%>
         given(<%= entityVarName %>Repository.findById(1L)).willReturn(Optional.of(get<%= entityName %>()));
         <%_ } _%>
-        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis-plus') { _%>
         given(<%= entityVarName %>Repository.selectById(1L)).willReturn(getCustomer());
         <%_ } _%>
         given(<%= entityVarName %>Mapper.toResponse(any(<%= entityName %>.class))).willReturn(get<%= entityName %>Response());
@@ -63,7 +63,7 @@ class <%= entityName %>ServiceTest {
 
     @Test
     void delete<%= entityName %>ById() {
-        <%_ if (persistenceType === 'jpa') { _%>
+        <%_ if (persistence === 'jpa') { _%>
         // given
         willDoNothing().given(<%= entityVarName %>Repository).deleteById(1L);
         <%_ } _%>

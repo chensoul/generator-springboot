@@ -26,6 +26,14 @@ services:
       - --enable-feature=exemplar-storage
       - --config.file=/etc/prometheus/prometheus.yml
 
+  tempo:
+    image: grafana/tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./docker/tempo/tempo.yml:/etc/tempo.yaml:ro
+    ports:
+      - "3200:3200"  # Tempo
+      - "9411:9411" # zipkin
 volumes:
   prometheus_data: {}
   grafana_data: {}

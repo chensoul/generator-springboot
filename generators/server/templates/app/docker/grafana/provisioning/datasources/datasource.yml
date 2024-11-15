@@ -7,15 +7,12 @@ datasources:
     url: http://prometheus:9090
     editable: false
     isDefault: true
-    <%_ if (traceType === 'tempo') { _%>
     jsonData:
       httpMethod: POST
       exemplarTraceIdDestinations:
         - name: trace_id
           datasourceUid: tempo
-    <%_ } _%>
 
-  <%_ if (traceType === 'tempo') { _%>
   - name: Tempo
     type: tempo
     access: proxy
@@ -35,7 +32,6 @@ datasources:
       nodeGraph:
         enabled: true
     <%_ } _%>
-  <%_ } _%>
 
   <%_ if (loggingType === 'loki') { _%>
   - name: Loki
@@ -49,12 +45,10 @@ datasources:
     version: 1
     editable: false
     apiVersion: 1
-    <%_ if (traceType === 'tempo') { _%>
     jsonData:
       derivedFields:
         - datasourceUid: tempo
           matcherRegex: \[.+,(.+?),
           name: TraceID
           url: $${__value.raw}
-    <%_ } _%>
   <%_ } _%>

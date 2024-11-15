@@ -3,6 +3,7 @@ const BaseGenerator = require('../base-generator');
 const constants = require('../constants');
 const prompts = require('./prompts');
 const path = require('path');
+const _ = require('lodash');
 
 module.exports = class extends BaseGenerator {
 
@@ -24,6 +25,8 @@ module.exports = class extends BaseGenerator {
         this.config.set(this.configOptions);
         Object.assign(this.configOptions, constants);
         this.configOptions.formatCode = this.options.formatCode !== false
+        this.configOptions.appVarName = _.replace(_.startCase(this.configOptions.appName)," ","");
+        console.log("this.configOptions.appVarName: " +this.configOptions.appVarName)
     }
 
     writing() {
@@ -82,7 +85,6 @@ module.exports = class extends BaseGenerator {
     }
 
     _generateMiscFiles(configOptions) {
-        this.fs.copyTpl(this.templatePath('app/lombok.config'), this.destinationPath('lombok.config'), configOptions);
         this.fs.copyTpl(this.templatePath('app/README.md'), this.destinationPath('README.md'), configOptions);
     }
 
@@ -169,7 +171,7 @@ module.exports = class extends BaseGenerator {
                 configOptions
             );
         });
-        ['code-quality.gradle', 'owasp.gradle'].forEach(tmpl => {
+        ['code-quality.gradle'].forEach(tmpl => {
             this.fs.copyTpl(
                 this.templatePath(gradleConfigDir + tmpl),
                 this.destinationPath('gradle/' + tmpl),
@@ -181,23 +183,18 @@ module.exports = class extends BaseGenerator {
     _generateAppCode(configOptions) {
 
         const mainJavaTemplates = [
-            'Application.java',
+             {src: 'Application.java', dest: configOptions.appVarName+'Application.java'},
             'config/WebMvcConfig.java',
             'config/JacksonConfig.java',
-            'config/SwaggerConfig.java',
+            'config/SpringdocConfig.java',
             'config/ApplicationProperties.java',
             'config/Initializer.java',
             'config/GlobalExceptionHandler.java',
             'config/aop/LoggingAspect.java',
             'exception/ResourceNotFoundException.java',
-            'model/response/PagedResult.java',
-            'util/AppConstants.java'
+            'util/AppConstants.java',
+            'util/PageUtils.java',
         ];
-
-        if(configOptions.loggingType === "elk") {
-            mainJavaTemplates.push('config/LogstashConfig.java');
-            mainJavaTemplates.push('util/LogstashUtils.java');
-        }
 
         if(configOptions.loggingType === "loki") {
             mainJavaTemplates.push('config/LokiConfig.java');
@@ -208,7 +205,7 @@ module.exports = class extends BaseGenerator {
             mainJavaTemplates.push('util/AggravateMetricsEndpoint.java');
         }
 
-        if(configOptions.databaseType === "mybatis-plus") {
+        if(configOptions.persistence === "mybatis-plus") {
             mainJavaTemplates.push('config/MybatisPlusConfig.java');
         }
 
@@ -224,13 +221,14 @@ module.exports = class extends BaseGenerator {
             'ApplicationIntegrationTest.java',
             'common/ContainersConfig.java',
             'common/AbstractIntegrationTest.java',
-            'TestApplication.java'
+            {src: 'TestApplication.java', dest: "Test"+configOptions.appVarName+'Application.java'},
+
         ];
         if(configOptions.features.includes("localstack")) {
             testJavaTemplates.push('SqsListenerIntegrationTest.java');
         }
 
-        if(configOptions.databaseType === "jpa") {
+        if(configOptions.persistence === "jpa") {
             mainJavaTemplates.push('SchemaValidationTest.java');
         }
 
@@ -288,25 +286,21 @@ module.exports = class extends BaseGenerator {
         if(configOptions.features.includes('monitor')) {
             this._generateMonitoringConfig(configOptions);
         }
+        if(configOptions.features.includes('zipkin')) {
+            this._generateZipkinConfig(configOptions);
+        }
         if(configOptions.loggingType === 'elk') {
             this._generateELKConfig(configOptions);
         }
         if(configOptions.loggingType === 'loki') {
             this._generateLokiConfig(configOptions);
         }
-        if(configOptions.traceType === 'zipkin') {
-            this._generateZipkinConfig(configOptions);
-        }
-        if(configOptions.traceType === 'tempo') {
-            this._generateTempoConfig(configOptions);
-        }
     }
 
     _generateAppDockerComposeFile(configOptions) {
         const resTemplates = [
             'docker-compose.yml',
-            'docker-compose-app.yml',
-            'docker-compose-sonar.yml'
+            'docker-compose-app.yml'
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
     }
@@ -327,6 +321,7 @@ module.exports = class extends BaseGenerator {
             'docker-compose-monitor.yml',
             'docker/prometheus/prometheus.yml',
             'docker/grafana/provisioning/datasources/datasource.yml',
+            'docker/tempo/tempo.yml',
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
 
@@ -348,19 +343,6 @@ module.exports = class extends BaseGenerator {
             'docker-compose-zipkin.yml'
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
-    }
-
-    _generateTempoConfig(configOptions) {
-        const resTemplates = [
-            'docker-compose-tempo.yml',
-            'docker/tempo/tempo.yml',
-        ];
-        this.generateFiles(configOptions, resTemplates, 'app/','./');
-
-        this.fs.copy(
-            this.templatePath('app/docker/tempo'),
-            this.destinationPath('docker/tempo')
-        );
     }
 
 };

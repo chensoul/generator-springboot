@@ -2,9 +2,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath "org.owasp:dependency-check-gradle:${owasp_plugin_version}"
-    }
 }
 plugins {
     id "org.springframework.boot"
@@ -16,9 +13,6 @@ plugins {
     id "org.sonarqube" apply false
 }
 apply from: "gradle/code-quality.gradle"
-if (project.hasProperty("ci")) {
-    apply from: "gradle/owasp.gradle"
-}
 
 group = "<%= packageName %>"
 version = "<%= DEFAULT_APP_VERSION %>"
@@ -39,14 +33,14 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
-    <%_ if (persistenceType === 'jpa') { _%>
-     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    <%_ } _%>
 
-    <%_ if (persistenceType === 'mybatis-plus') { _%>
+    <%_ if (persistence === 'jpa') { _%>
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    <%_ } _%>
+    <%_ if (persistence === 'mybatis-plus') { _%>
+    implementation "org.springframework.data:spring-data-commons"
     implementation "com.baomidou:mybatis-plus-spring-boot3-starter"
     <%_ } _%>
-
     <%_ if (databaseType === "mysql") { _%>
     runtimeOnly "com.mysql:mysql-connector-j"
     <%_ } _%>
@@ -69,28 +63,26 @@ dependencies {
     implementation "org.liquibase:liquibase-core"
     <%_ } _%>
 
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
-    implementation "org.apache.commons:commons-lang3"
-    implementation "commons-io:commons-io:${commons_io_version}"
-
-    <%_ if (features.includes("localstack")) { _%>
-    implementation "io.awspring.cloud:spring-cloud-aws-starter"
-    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
-    <%_ } _%>
-    <%_ if (loggingType === "elk") { _%>
-    implementation "net.logstash.logback:logstash-logback-encoder:${logstash_logback_encoder_version}"
-    <%_ } _%>
     <%_ if (loggingType === 'loki') { _%>
     implementation "com.github.loki4j:loki-logback-appender:${loki_logback_appender_version}"
     <%_ } _%>
     <%_ if (features.includes("monitor")) { _%>
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"
     <%_ } _%>
-    <%_ if (traceType === 'zipkin' ) { _%>
+    <%_ if (features.includes("zipkin") || features.includes("monitor")) { _%>
     implementation "io.opentelemetry:opentelemetry-exporter-zipkin"
     implementation "io.micrometer:micrometer-tracing-bridge-brave"
     implementation "io.zipkin.reporter2:zipkin-reporter-brave"
     <%_ } _%>
+
+    <%_ if (features.includes("localstack")) { _%>
+    implementation "io.awspring.cloud:spring-cloud-aws-starter"
+    implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
+    <%_ } _%>
+
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc_openapi_version}"
+    implementation "org.apache.commons:commons-lang3"
+    implementation "commons-io:commons-io:${commons_io_version}"
 
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
@@ -120,7 +112,7 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}"
-        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis-plus') { _%>
         mavenBom "com.baomidou:mybatis-plus-bom:${mybatis_plus_version}"
         <%_ } _%>
         <%_ if (features.includes("localstack")) { _%>

@@ -1,114 +1,77 @@
 # <%= appName %>
 
+This project was created with [generator-springboot](https://github.com/chensoul/generator-springboot/).
+
+## Build
+
+The application can be built using the following command:
+
+```bash
 <%_ if (buildTool === 'maven') { _%>
-### Format code
-
-```shell
-$ ./mvnw spotless:apply
-```
-
-### Run tests
-
-```shell
-$ ./mvnw clean verify
-```
-
-### Run locally
-
-```shell
-$ docker-compose -f docker-compose.yml up -d
-$ ./mvnw spring-boot:run
-```
-
-### Using Testcontainers at Development Time
-You can run `TestApplication.java` from your IDE directly.
-You can also run the application using Maven as follows:
-
-```shell
-./mvnw spring-boot:test-run
-```
-
-### Run SonarQube
-
-```shell
-$ docker-compose -f docker-compose-sonar.yml up -d
-$ mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
-```
-
-<%_ if (dbMigrationTool === 'flywaydb') { _%>
-### Repair Flyway Schema History Table
-
-```shell
-<%_ if (databaseType === 'postgresql') { _%>
-./mvnw flyway:repair -Dflyway.url=jdbc:postgresql://localhost:5432/appdb -Dflyway.user=appuser -Dflyway.password=secret
+./mvnw clean package
 <%_ } _%>
-<%_ if (databaseType === 'mysql') { _%>
-./mvnw flyway:repair -Dflyway.url=jdbc:mysql://localhost:3306/appdb -Dflyway.user=appuser -Dflyway.password=secret
-<%_ } _%>
-<%_ if (databaseType === 'mariadb') { _%>
-./mvnw flyway:repair -Dflyway.url=jdbc:mariadb://localhost:3306/appdb -Dflyway.user=appuser -Dflyway.password=secret
-<%_ } _%>
-```
-<%_ } _%>
-<%_ } _%>
-
 <%_ if (buildTool === 'gradle') { _%>
-### Format code
-
-```shell
-$ ./gradlew spotlessApply
-```
-
-### Run tests
-
-```shell
 $ ./gradlew clean build
+<%_ } _%>
 ```
 
-### Run locally
+## Format code
 
 ```shell
-$ docker-compose -f docker-compose.yml up -d
-$ ./gradlew bootRun
+<%_ if (buildTool === 'maven') { _%>
+$ ./mvnw spotless:apply
+<%_ } _%>
+<%_ if (buildTool === 'gradle') { _%>
+$ ./gradlew spotlessApply
+<%_ } _%>
 ```
 
-### Using Testcontainers at Development Time
-You can run `TestApplication.java` from your IDE directly.
-You can also run the application using Gradle as follows:
+## Run SonarQube
 
 ```shell
-$ ./gradlew bootTestRun
-```
-
-### Run SonarQube
-
-```shell
-$ docker-compose -f docker-compose-sonar.yml up -d
+<%_ if (buildTool === 'maven') { _%>
+$ ./mvnw clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+<%_ } _%>
+<%_ if (buildTool === 'gradle') { _%>
 $ ./gradlew sonarqube -Dsonar.login=admin -Dsonar.password=admin
+<%_ } _%>
 ```
 
 <%_ if (dbMigrationTool === 'flywaydb') { _%>
-### Repair Flyway Schema History Table
+## Repair Flyway Schema History Table
 
 ```shell
-<%_ if (databaseType === 'postgresql') { _%>
+<%_ if (buildTool === 'maven') { _%>
+  <%_ if (databaseType === 'postgresql') { _%>
+./mvnw flyway:repair -Dflyway.url=jdbc:postgresql://localhost:5432/appdb -Dflyway.user=appuser -Dflyway.password=secret
+  <%_ } _%>
+  <%_ if (databaseType === 'mysql') { _%>
+./mvnw flyway:repair -Dflyway.url=jdbc:mysql://localhost:3306/appdb -Dflyway.user=appuser -Dflyway.password=secret
+  <%_ } _%>
+  <%_ if (databaseType === 'mariadb') { _%>
+./mvnw flyway:repair -Dflyway.url=jdbc:mariadb://localhost:3306/appdb -Dflyway.user=appuser -Dflyway.password=secret
+  <%_ } _%>
+<%_ } _%>
+<%_ if (buildTool === 'gradle') { _%>
+  <%_ if (databaseType === 'postgresql') { _%>
 ./gradlew flywayRepair -Dflyway.url=jdbc:postgresql://localhost:5432/appdb -Dflyway.user=appuser -Dflyway.password=secret
-<%_ } _%>
-<%_ if (databaseType === 'mysql') { _%>
+  <%_ } _%>
+  <%_ if (databaseType === 'mysql') { _%>
 ./gradlew flyway:repair -Dflyway.url=jdbc:mysql://localhost:3306/appdb -Dflyway.user=appuser -Dflyway.password=secret
-<%_ } _%>
-<%_ if (databaseType === 'mariadb') { _%>
+  <%_ } _%>
+  <%_ if (databaseType === 'mariadb') { _%>
 ./gradlew flywayRepair -Dflyway.url=jdbc:mariadb://localhost:3306/appdb -Dflyway.user=appuser -Dflyway.password=secret
+  <%_ } _%>
 <%_ } _%>
 ```
 <%_ } _%>
-<%_ } _%>
 
-### Useful Links
-* Swagger UI: http://localhost:8080/swagger-ui.html
+## Useful Links
+
+* Springdoc UI: http://localhost:8080/swagger-ui.html
 * Actuator Endpoint: http://localhost:8080/actuator
 * Sonarqube UI: http://localhost:9001
-<%_ if (traceType === 'zipkin') { _%>
+<%_ if (features.includes('zipkin')) { _%>
 * Zipkin UI: http://localhost:9411/
 <%_ } _%>
 <%_ if (loggingType === 'elk') { _%>

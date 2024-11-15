@@ -26,7 +26,7 @@ function prompting() {
                     ? true
                     : 'The package name you have provided is not a valid Java package name.',
             message: 'What is the default package name?',
-            default: 'com.mycompany.myservice'
+            default: 'com.mycompany'
         },
         {
             type: 'list',
@@ -70,7 +70,7 @@ function prompting() {
         },
         {
             type: 'list',
-            name: 'persistenceType',
+            name: 'persistence',
             message: 'Which type of persistence framework you want to use?',
             choices: [
                 {
@@ -115,13 +115,13 @@ function prompting() {
             message: 'Which type of logging tool you want to use?',
             choices: [
                 {
-                    value: 'elk',
-                    name: 'ELK Docker configuration'
-                },
-                {
                     value: 'loki',
-                    name: 'Loki Docker configuration'
+                    name: 'Loki'
                 } ,
+                {
+                    value: 'elk',
+                    name: 'Elasticsearch, Kibana, Logstash'
+                },
                 {
                     value: 'none',
                     name: 'None'
@@ -130,37 +130,21 @@ function prompting() {
             default: 'elk'
         },
         {
-            type: 'list',
-            name: 'traceType',
-            message: 'Which type of trace tool you want to use?',
-            choices: [
-                {
-                    value: 'zipkin',
-                    name: 'Zipkin Docker configuration'
-                },
-                {
-                    value: 'tempo',
-                    name: 'Tempo Docker configuration'
-                } ,
-                {
-                    value: 'none',
-                    name: 'None'
-                }
-            ],
-            default: 'zipkin'
-        },
-        {
             type: 'checkbox',
             name: 'features',
             message: 'Select the features you want?',
             choices: [
                 {
-                    value: 'monitor',
-                    name: 'Prometheus, Grafana Docker configuration'
+                    value: 'zipkin',
+                    name: 'Zipkin'
                 },
                 {
                     value: 'localstack',
-                    name: 'Localstack Docker configuration'
+                    name: 'Localstack'
+                },
+                {
+                    value: 'monitor',
+                    name: 'Prometheus, Grafana, Tempo'
                 }
             ]
         },

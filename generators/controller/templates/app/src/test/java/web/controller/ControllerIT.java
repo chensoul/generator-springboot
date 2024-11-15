@@ -1,6 +1,6 @@
 package <%= packageName %>.web.controller;
 
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 <%_ } _%>
 import static org.hamcrest.CoreMatchers.is;
@@ -34,10 +34,10 @@ class <%= entityName %>ControllerIT extends AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        <%_ if (persistenceType === 'jpa') { _%>
+        <%_ if (persistence === 'jpa') { _%>
         <%= entityVarName %>Repository.deleteAllInBatch();
         <%_ } _%>
-        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis-plus') { _%>
         <%= entityVarName %>Repository.delete(Wrappers.query());
         <%_ } _%>
 
@@ -45,10 +45,10 @@ class <%= entityName %>ControllerIT extends AbstractIntegrationTest {
         <%= entityVarName %>List.add(new <%= entityName %>(null, "First <%= entityName %>"));
         <%= entityVarName %>List.add(new <%= entityName %>(null, "Second <%= entityName %>"));
         <%= entityVarName %>List.add(new <%= entityName %>(null, "Third <%= entityName %>"));
-        <%_ if (persistenceType === 'jpa') { _%>
+        <%_ if (persistence === 'jpa') { _%>
         <%= entityVarName %>List = <%= entityVarName %>Repository.saveAll(<%= entityVarName %>List);
         <%_ } _%>
-        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis-plus') { _%>
         <%= entityVarName %>Repository.insert(<%= entityVarName %>List);
         <%_ } _%>
     }

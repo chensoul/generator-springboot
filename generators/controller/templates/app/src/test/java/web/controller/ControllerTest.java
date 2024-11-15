@@ -1,6 +1,6 @@
 package <%= packageName %>.web.controller;
 
-<%_ if (persistenceType === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis-plus') { _%>
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 <%_ } _%>
 import static <%= packageName %>.util.AppConstants.PROFILE_TEST;
@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-<%_ if (persistenceType === 'jpa') { _%>
+<%_ if (persistence === 'jpa') { _%>
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 <%_ } _%>
@@ -66,10 +66,10 @@ class <%= entityName %>ControllerTest {
 
     @Test
     void shouldFetchAll<%= entityName %>s() throws Exception {
-        <%_ if (persistenceType === 'jpa') { _%>
+        <%_ if (persistence === 'jpa') { _%>
         Page<<%= entityName %>> page = new PageImpl<>(<%= entityVarName %>List);
         <%_ } _%>
-        <%_ if (persistenceType === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis-plus') { _%>
         Page<<%= entityName %>> page = new Page<>(0, 10, 3);
         page.setRecords(<%= entityVarName %>List);
         <%_ } _%>
