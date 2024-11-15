@@ -23,19 +23,20 @@ $ yo springboot
 The generator-springboot generates a Spring Boot application with the following features configured:
 
 * Spring Boot project with Maven and Gradle support
-* Spring Data JPA integration with an option to select databases like MySQL, Postgresql, MariaDB.
-* Flyway and Liquibase database migration support.
+* Persistence databases like MySQL, Postgresql, MariaDB with **Spring Data JPA** or **Mybatis Plus**
+* Flyway and Liquibase database migration support
 * CORS configuration
-* SpringDoc OpenAPI UI Integration
+* SpringDoc OpenAPI Integration
 * SpringBoot Actuator configuration
 * Testcontainers based Testing and Local dev mode setup
-* DockerCompose for application, ELK, Zipkin, Prometheus, Grafana, Tempo, Loki
+* DockerCompose for application, **ELK, Zipkin, Prometheus, Grafana, Tempo, Loki**
 * GitHub Actions Configuration
 * Dockerfile
 * Jenkinsfile
 * SonarQube and JaCoCo based static analysis tools configuration
-* Code formatting using Spotless Maven plugin
-* JUnit 5
+* Code formatting using Spotless plugin
+* JUnit 5 for unit testing
+* ArchUnit for architecture testing
 
 ### Generate a SpringBoot Microservice
 After installing the `generator-springboot`, you can generate a new Spring Boot application as follows:
@@ -146,7 +147,7 @@ You can generate REST API with CRUD operation using the following command:
 **IMPORTANT:** You should run the following command from within the generated project folder.
 
 ```shell
-$ cd blog
+$ cd myservice
 $ yo springboot:controller Customer --base-path /api/customers
 ```
 

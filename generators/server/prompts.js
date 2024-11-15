@@ -15,7 +15,7 @@ function prompting() {
                 /^([a-z_][a-z0-9_\-]*)$/.test(input)
                     ? true
                     : 'The application name you have provided is not valid',
-            message: 'What is the application name?',
+            message: 'What is the base name of your application?',
             default: 'myservice'
         },
         {

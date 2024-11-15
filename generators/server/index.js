@@ -13,7 +13,7 @@ module.exports = class extends BaseGenerator {
     }
 
     initializing() {
-        this.logSuccess('Generating SpringBoot Application')
+        this.logSuccess('🚀 Welcome to SpringBoot Application Generator 🚀')
     }
 
     get prompting() {
