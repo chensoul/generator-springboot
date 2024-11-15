@@ -1,6 +1,6 @@
 package <%= packageName %>.entity;
 
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "<%= tableName %>")
 <%_ } _%>
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 @TableName(value = "<%= tableName %>")
 <%_ } _%>
 @Getter
@@ -42,7 +42,7 @@ public class <%= entityName %> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     <%_ } _%>
 <%_ } _%>
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
     @TableId
 <%_ } _%>
     private Long id;
@@ -50,7 +50,7 @@ public class <%= entityName %> {
 <%_ if (persistence === 'jpa') { _%>
     @Column(nullable = false)
 <%_ } _%>
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
     @TableField
 <%_ } _%>
     private String text;

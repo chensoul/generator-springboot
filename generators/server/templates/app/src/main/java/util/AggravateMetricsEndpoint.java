@@ -1,4 +1,6 @@
-package <%= packageName %>.util;
+package
+
+<%=packageName%>.util;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.FunctionCounter;
@@ -50,13 +52,13 @@ public class AggravateMetricsEndpoint {
         // Cache stats
         results.put("cache", cacheMetrics());
         // Service stats
-        results.put("services", serviceMetrics());
+        results.put("service", serviceMetrics());
         // Database stats
         results.put("hikaricp.connections", databaseMetrics());
         // Garbage collector
-        results.put("garbageCollector", garbageCollectorMetrics());
+        results.put("gc", garbageCollectorMetrics());
         // Process stats
-        results.put("processMetrics", processMetrics());
+        results.put("process", processMetrics());
 
         return results;
     }
@@ -179,7 +181,7 @@ public class AggravateMetricsEndpoint {
                         .timers();
                 long count = httpTimersStream.stream().mapToLong(Timer::count).sum();
 
-                if (count != 0) {
+                if (count!=0) {
                     double max = httpTimersStream.stream()
                             .mapToDouble(x -> x.totalTime(TimeUnit.MILLISECONDS))
                             .max()
@@ -211,9 +213,9 @@ public class AggravateMetricsEndpoint {
         counters.forEach(counter -> {
             String key = counter.getId().getName();
             String name = counter.getId().getTag("name");
-            if (name != null) {
+            if (name!=null) {
                 resultsCache.putIfAbsent(name, new HashMap<>());
-                if (counter.getId().getTag("result") != null) {
+                if (counter.getId().getTag("result")!=null) {
                     key += "." + counter.getId().getTag("result");
                 }
                 resultsCache.get(name).put(key, counter.count());
@@ -227,7 +229,7 @@ public class AggravateMetricsEndpoint {
         gauges.forEach(gauge -> {
             String key = gauge.getId().getName();
             String name = gauge.getId().getTag("name");
-            if (name != null) {
+            if (name!=null) {
                 resultsCache.putIfAbsent(name, new HashMap<>());
                 resultsCache.get(name).put(key, gauge.value());
             } else {
@@ -244,7 +246,7 @@ public class AggravateMetricsEndpoint {
 
         Collection<Gauge> gauges = jvmUsedSearch.gauges();
         gauges.forEach(gauge -> {
-            String key = gauge.getId().getTag("id").replaceAll(" ","");
+            String key = gauge.getId().getTag("id").replaceAll(" ", "");
             resultsJvm.putIfAbsent(key, new HashMap<>());
             resultsJvm.get(key).put("used", gauge.value());
         });
@@ -253,7 +255,7 @@ public class AggravateMetricsEndpoint {
 
         gauges = jvmMaxSearch.gauges();
         gauges.forEach(gauge -> {
-            String key = gauge.getId().getTag("id").replaceAll(" ","");
+            String key = gauge.getId().getTag("id").replaceAll(" ", "");
             resultsJvm.putIfAbsent(key, new HashMap<>());
             resultsJvm.get(key).put("max", gauge.value());
         });
@@ -262,7 +264,7 @@ public class AggravateMetricsEndpoint {
                 .name(s -> s.contains("jvm.memory.committed"))
                 .gauges();
         gauges.forEach(gauge -> {
-            String key = gauge.getId().getTag("id").replaceAll(" ","");
+            String key = gauge.getId().getTag("id").replaceAll(" ", "");
             resultsJvm.putIfAbsent(key, new HashMap<>());
             resultsJvm.get(key).put("committed", gauge.value());
         });
@@ -297,7 +299,7 @@ public class AggravateMetricsEndpoint {
 
             resultsPerCode.put("count", count);
             resultsPerCode.put("max", max);
-            resultsPerCode.put("mean", count != 0 ? totalTime / count : 0);
+            resultsPerCode.put("mean", count!=0 ? totalTime / count:0);
 
             resultsHttpPerCode.put(code, resultsPerCode);
         });

@@ -205,7 +205,7 @@ module.exports = class extends BaseGenerator {
             mainJavaTemplates.push('util/AggravateMetricsEndpoint.java');
         }
 
-        if(configOptions.persistence === "mybatis-plus") {
+        if(configOptions.persistence === "mybatis") {
             mainJavaTemplates.push('config/MybatisPlusConfig.java');
         }
 

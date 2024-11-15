@@ -1,6 +1,6 @@
 package <%= packageName %>.web.controller;
 
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 <%_ } _%>
 import static <%= packageName %>.util.AppConstants.PROFILE_TEST;
@@ -69,7 +69,7 @@ class <%= entityName %>ControllerTest {
         <%_ if (persistence === 'jpa') { _%>
         Page<<%= entityName %>> page = new PageImpl<>(<%= entityVarName %>List);
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         Page<<%= entityName %>> page = new Page<>(0, 10, 3);
         page.setRecords(<%= entityVarName %>List);
         <%_ } _%>

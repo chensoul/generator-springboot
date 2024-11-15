@@ -15,7 +15,7 @@ import <%= packageName %>.model.response.PagedResult;
 import <%= packageName %>.repository.<%= entityName %>Repository;
 import java.util.List;
 import java.util.Optional;
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 import org.junit.jupiter.api.BeforeEach;
 <%_ } _%>
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 import org.springframework.test.util.ReflectionTestUtils;
 <%_ } _%>
 
@@ -35,7 +35,7 @@ class <%= entityName %>ServiceTest {
 
     @InjectMocks private <%= entityName %>Service <%= entityVarName %>Service;
 
-    <%_ if (persistence === 'mybatis-plus') { _%>
+    <%_ if (persistence === 'mybatis') { _%>
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(customerService, "baseMapper", customerRepository);
@@ -48,7 +48,7 @@ class <%= entityName %>ServiceTest {
         <%_ if (persistence === 'jpa') { _%>
         given(<%= entityVarName %>Repository.findById(1L)).willReturn(Optional.of(get<%= entityName %>()));
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         given(<%= entityVarName %>Repository.selectById(1L)).willReturn(getCustomer());
         <%_ } _%>
         given(<%= entityVarName %>Mapper.toResponse(any(<%= entityName %>.class))).willReturn(get<%= entityName %>Response());

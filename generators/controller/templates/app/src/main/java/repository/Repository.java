@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface <%= entityName %>Repository extends JpaRepository<<%= entityName %>, Long> {}
 <%_ } _%>
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import <%= packageName %>.entity.<%= entityName %>;
 import org.apache.ibatis.annotations.Mapper;

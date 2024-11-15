@@ -1,6 +1,6 @@
 package <%=packageName%>.config;
 
-import <%=packageName%>util.AggravateMetricsEndpoint;
+import <%=packageName%>.util.AggravateMetricsEndpoint;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;

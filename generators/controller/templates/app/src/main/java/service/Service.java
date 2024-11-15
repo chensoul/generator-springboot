@@ -1,6 +1,6 @@
 package <%= packageName %>.service;
 
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 <%_ } _%>
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 <%_ if (persistence === 'jpa') { _%>
 public class <%= entityName %>Service {
 <%_ } _%>
-<%_ if (persistence === 'mybatis-plus') { _%>
+<%_ if (persistence === 'mybatis') { _%>
 public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repository, <%= entityName %>> {
 <%_ } _%>
     <%_ if (persistence === 'jpa') { _%>
@@ -42,7 +42,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
         Page<<%= entityName %>> <%= entityVarName %>Page = <%= entityVarName %>Repository.findAll(pageable);
         List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toResponseList(<%= entityVarName %>Page.getContent());
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         IPage<<%= entityName %>> <%= entityName %>Page = page(PageUtils.fromPageRequest(<%= entityName %>Query.pageRequest()));
         List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toResponseList(<%= entityVarName %>Page.getRecords());
         <%_ } _%>
@@ -53,7 +53,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
         <%_ if (persistence === 'jpa') { _%>
         return <%= entityVarName %>Repository.findById(id).map(<%= entityVarName %>Mapper::toResponse);
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         return Optional.ofNullable(getById(id)).map(<%= entityVarName %>Mapper::toResponse);
         <%_ } _%>
     }
@@ -65,7 +65,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
         <%= entityName %> saved<%= entityName %> = <%= entityVarName %>Repository.save(<%= entityVarName %>);
         return <%= entityVarName %>Mapper.toResponse(saved<%= entityName %>);
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         baseMapper.insert(<%= entityVarName %>);
         return <%= entityVarName %>Mapper.toResponse(<%= entityVarName %>);
         <%_ } _%>
@@ -79,7 +79,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
                         .findById(id)
                         .orElseThrow(() -> new <%= entityName %>NotFoundException(id));
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         <%= entityName %> <%= entityVarName %> =
                 Optional.of(baseMapper.selectById(id))
                 .orElseThrow(() -> new <%= entityName %>NotFoundException(id));
@@ -93,7 +93,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
         <%= entityName %> updated<%= entityName %> = <%= entityVarName %>Repository.save(<%= entityVarName %>);
         return <%= entityVarName %>Mapper.toResponse(updated<%= entityName %>);
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         baseMapper.updateById(<%= entityVarName %>);
         return <%= entityVarName %>Mapper.toResponse(<%= entityVarName %>);
         <%_ } _%>
@@ -104,7 +104,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
         <%_ if (persistence === 'jpa') { _%>
         <%= entityVarName %>Repository.deleteById(id);
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         baseMapper.deleteById(id);
         <%_ } _%>
     }

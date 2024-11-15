@@ -1,6 +1,6 @@
 package <%= packageName %>.util;
 
-<%_ if (persistence === "mybatis-plus") { _%>
+<%_ if (persistence === "mybatis") { _%>
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 <%_ } _%>
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public interface PageUtils {
         return new PageImpl<>(list.subList(startOfPage, endOfPage), pageable, list.size());
     }
 
-    <%_ if (persistence === "mybatis-plus") { _%>
+    <%_ if (persistence === "mybatis") { _%>
     static com.baomidou.mybatisplus.extension.plugins.pagination.Page fromPageRequest(PageRequest pageRequest) {
         com.baomidou.mybatisplus.extension.plugins.pagination.Page page =
                 com.baomidou.mybatisplus.extension.plugins.pagination.Page.of(

@@ -28,7 +28,7 @@
         </java.version>
         <spring-cloud.version><%= SPRING_CLOUD_VERSION %>
         </spring-cloud.version>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         <mybatis-plus.version><%= MYBATIS_PLUS_VERSION %>
         </mybatis-plus.version>
         <%_ } _%>
@@ -87,7 +87,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <%_ } _%>
-        <%_ if (persistence === 'mybatis-plus') { _%>
+        <%_ if (persistence === 'mybatis') { _%>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
@@ -276,7 +276,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <%_ if (persistence === 'mybatis-plus') { _%>
+            <%_ if (persistence === 'mybatis') { _%>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-bom</artifactId>

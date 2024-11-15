@@ -78,12 +78,8 @@ function prompting() {
                     name: 'JPA'
                 },
                 {
-                    value: 'mybatis-plus',
-                    name: 'Mybatis Plus'
-                },
-                {
-                    value: 'none',
-                    name: 'None'
+                    value: 'mybatis',
+                    name: 'Mybatis'
                 }
             ],
             default: 'jpa'
@@ -127,7 +123,7 @@ function prompting() {
                     name: 'None'
                 }
             ],
-            default: 'elk'
+            default: 'none'
         },
         {
             type: 'checkbox',
