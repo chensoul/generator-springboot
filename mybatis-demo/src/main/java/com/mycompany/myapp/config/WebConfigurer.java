@@ -30,7 +30,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     @Override
     public void onStartup(ServletContext servletContext) {
-        if (env.getActiveProfiles().length!=0) {
+        if (env.getActiveProfiles().length != 0) {
             LOG.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }
 
@@ -38,8 +38,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     }
 
     @Override
-    public void customize(WebServerFactory server) {
-    }
+    public void customize(WebServerFactory server) {}
 
     @Bean
     public CorsFilter corsFilter() {
