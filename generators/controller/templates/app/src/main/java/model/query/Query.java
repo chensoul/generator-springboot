@@ -1,5 +1,5 @@
 package <%= packageName %>.model.query;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-public record <%= entityName %>Query(PageRequest pageRequest) {}
+public record <%= entityName %>Query(Pageable pageable) {}

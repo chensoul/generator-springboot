@@ -3,26 +3,16 @@ package <%= packageName %>.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Data
 @ConfigurationProperties("application")
 public class ApplicationProperties {
 
-    @NestedConfigurationProperty
-    private Cors cors = new Cors();
+    private final CorsConfiguration cors = new CorsConfiguration();
 
     @NestedConfigurationProperty
     private Logging logging = new Logging();
-
-    @Data
-    public static class Cors {
-        private String pathPattern = "/api/**";
-        private String allowedMethods = "*";
-        private String allowedHeaders = "*";
-        private String allowedOriginPatterns = "*";
-        private boolean allowCredentials = true;
-    }
 
     @Data
     public static class Logging {

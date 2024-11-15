@@ -8,7 +8,7 @@ module.exports = class extends BaseGenerator {
     constructor(args, opts) {
         super(args, opts);
         this.configOptions = this.options.configOptions || {};
-
+        console.log(1)
         this.argument("entityName", {
             type: String,
             required: true,
@@ -41,7 +41,7 @@ module.exports = class extends BaseGenerator {
         this.configOptions.basePath = this.options['base-path'];
         this.configOptions.entityName = this.options.entityName;
         this.configOptions.entityVarName = _.camelCase(this.options.entityName);
-        this.configOptions.tableName = _.snakeCase(this.options.entityName)+'s';
+        this.configOptions.tableName = _.snakeCase(this.options.entityName);
         this.configOptions.doesNotSupportDatabaseSequences =
             this.configOptions.databaseType === 'mysql';
         this.configOptions.formatCode = this.options.formatCode !== false

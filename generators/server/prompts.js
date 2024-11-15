@@ -25,8 +25,8 @@ function prompting() {
                 /^([a-z_][a-z0-9_]*(\.[a-z_][a-z0-9_]*)*)$/.test(input)
                     ? true
                     : 'The package name you have provided is not a valid Java package name.',
-            message: 'What is the default package name?',
-            default: 'com.mycompany'
+            message: 'What is your default Java package name?',
+            default: 'com.mycompany.myapp'
         },
         {
             type: 'list',
@@ -147,7 +147,7 @@ function prompting() {
         {
             type: 'list',
             name: 'buildTool',
-            message: 'Which build tool do you want to use?',
+            message: 'Which type of building tool you want to use?',
             choices: [
                 {
                     value: 'maven',

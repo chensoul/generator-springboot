@@ -7,19 +7,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import <%= packageName %>.entity.<%= entityName %>;
 import <%= packageName %>.exception.<%= entityName %>NotFoundException;
 import <%= packageName %>.mapper.<%= entityName %>Mapper;
-import <%= packageName %>.model.query.Find<%= entityName %>Query;
+import <%= packageName %>.model.query.<%= entityName %>Query;
 import <%= packageName %>.model.request.<%= entityName %>Request;
 import <%= packageName %>.model.response.<%= entityName %>Response;
-import <%= packageName %>.model.response.PagedResult;
 import <%= packageName %>.repository.<%= entityName %>Repository;
+import <%= packageName %>.util.PageUtils;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-<%_ if (persistence === 'jpa') { _%>
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-<%_ } _%>
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,17 +34,18 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
     <%_ } _%>
     private final <%= entityName %>Mapper <%= entityVarName %>Mapper;
 
-    public PagedResult<<%= entityName %>Response> findAll<%= entityName %>s(
-        <%= entityName %>Query <%= entityName %>Query) {
+    public Page<<%= entityName %>Response> findAll<%= entityName %>s(
+        <%= entityName %>Query <%= entityVarName %>Query) {
         <%_ if (persistence === 'jpa') { _%>
-        Page<<%= entityName %>> <%= entityVarName %>Page = <%= entityVarName %>Repository.findAll(pageable);
+        Page<<%= entityName %>> <%= entityVarName %>Page = <%= entityVarName %>Repository.findAll(<%= entityVarName %>Query.pageable());
         List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toResponseList(<%= entityVarName %>Page.getContent());
+        return new PageImpl(<%= entityVarName %>ResponseList, <%= entityVarName %>Query.pageable(), <%= entityVarName %>Page.getTotalElements());
         <%_ } _%>
         <%_ if (persistence === 'mybatis') { _%>
-        IPage<<%= entityName %>> <%= entityName %>Page = page(PageUtils.fromPageRequest(<%= entityName %>Query.pageRequest()));
+        IPage<<%= entityName %>> <%= entityVarName %>Page = page(PageUtils.fromPageRequest(<%= entityVarName %>Query.pageable()));
         List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toResponseList(<%= entityVarName %>Page.getRecords());
+        return new PageImpl(<%= entityVarName %>ResponseList, <%= entityVarName %>Query.pageable(), <%= entityVarName %>Page.getTotal());
         <%_ } _%>
-        return new PageImpl(<%= entityVarName %>ResponseList, <%= entityVarName %>Query.pageRequest(), <%= entityVarName %>Page.getTotal());
     }
 
     public Optional<<%= entityName %>Response> find<%= entityName %>ById(Long id) {

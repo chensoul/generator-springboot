@@ -1,18 +1,19 @@
 package <%= packageName %>.web.controller;
 
 import <%= packageName %>.exception.<%= entityName %>NotFoundException;
-import <%= packageName %>.model.query.Find<%= entityName %>Query;
+import <%= packageName %>.model.query.<%= entityName %>Query;
 import <%= packageName %>.model.request.<%= entityName %>Request;
 import <%= packageName %>.model.response.<%= entityName %>Response;
-import <%= packageName %>.model.response.PagedResult;
 import <%= packageName %>.service.<%= entityName %>Service;
-import <%= packageName %>.util.AppConstants;
 import java.util.List;
 import java.net.URI;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,31 +36,11 @@ class <%= entityName %>Controller {
     private final <%= entityName %>Service <%= entityVarName %>Service;
 
     @GetMapping
-    PagedResult<<%= entityName %>Response> getAll<%= entityName %>s(
-            @RequestParam(
-                value = "pageNumber",
-                defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,
-                required = false)
-            int pageNumber,
-            @RequestParam(
-                        value = "pageSize",
-                        defaultValue = AppConstants.DEFAULT_PAGE_SIZE,
-                        required = false)
-                int pageSize,
-            @RequestParam(
-                        value = "sortBy",
-                        defaultValue = AppConstants.DEFAULT_SORT_BY,
-                        required = false)
-                String sortBy,
-            @RequestParam(
-                        value = "sortDir",
-                        defaultValue = AppConstants.DEFAULT_SORT_DIRECTION,
-                        required = false)
-                String sortDir
-                ) {
-        Find<%= entityName %>Query find<%= entityName %>Query =
-                new Find<%= entityName %>Query(pageNumber, pageSize, sortBy, sortDir);
-        return <%= entityVarName %>Service.findAll<%= entityName %>s(find<%= entityName %>Query);
+    Page<<%= entityName %>Response> getAll<%= entityName %>s(
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        <%= entityName %>Query <%= entityVarName %>Query = new <%= entityName %>Query(pageable);
+        return <%= entityVarName %>Service.findAll<%= entityName %>s(<%= entityVarName %>Query);
     }
 
     @GetMapping("/{id}")

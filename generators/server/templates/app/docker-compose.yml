@@ -1,11 +1,4 @@
 services:
-  sonar:
-    image: sonarqube:<%= SONARQUBE_IMAGE_VERSION %>
-    environment:
-      - SONAR_FORCEAUTHENTICATION=false
-    ports:
-      - "9001:9000"
-      - "9000:9000"
 <%_ if (databaseType === 'postgresql') { _%>
   postgresql:
     image: <%= POSTGRESQL_IMAGE %>

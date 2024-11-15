@@ -7,58 +7,40 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version><%= SPRING_BOOT_VERSION %>
-        </version>
+        <version><%= SPRING_BOOT_VERSION %></version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId><%= packageName %>
-    </groupId>
-    <artifactId><%= appName %>
-    </artifactId>
-    <version><%= DEFAULT_APP_VERSION %>
-    </version>
+    <groupId><%= packageName %></groupId>
+    <artifactId><%= appName %></artifactId>
+    <version><%= DEFAULT_APP_VERSION %></version>
 
-    <name><%= appName %>
-    </name>
-    <description><%= appName %>
-    </description>
+    <name><%= appName %></name>
+    <description><%= appName %></description>
 
     <properties>
-        <java.version><%= JAVA_VERSION %>
-        </java.version>
-        <spring-cloud.version><%= SPRING_CLOUD_VERSION %>
-        </spring-cloud.version>
+        <java.version><%= JAVA_VERSION %></java.version>
+
+        <spring-cloud.version><%= SPRING_CLOUD_VERSION %></spring-cloud.version>
         <%_ if (persistence === 'mybatis') { _%>
-        <mybatis-plus.version><%= MYBATIS_PLUS_VERSION %>
-        </mybatis-plus.version>
+        <mybatis-plus.version><%= MYBATIS_PLUS_VERSION %></mybatis-plus.version>
         <%_ } _%>
         <%_ if (features.includes('localstack')) { _%>
-        <spring-cloud-aws.version><%= SPRING_CLOUD_AWS_VERSION %>
-        </spring-cloud-aws.version>
+        <spring-cloud-aws.version><%= SPRING_CLOUD_AWS_VERSION %></spring-cloud-aws.version>
         <%_ } _%>
         <%_ if (loggingType === 'loki') { _%>
-        <loki-logback-appender.version><%= LOKI_LOGBACK_APPENDER %>
-        </loki-logback-appender.version>
+        <loki-logback-appender.version><%= LOKI_LOGBACK_APPENDER %></loki-logback-appender.version>
         <%_ } _%>
-        <springdoc-openapi.version><%= SPRINGDOC_OPENAPI_VERSION %>
-        </springdoc-openapi.version>
-        <commons-io.version><%= COMMONS_IO_VERSION %>
-        </commons-io.version>
+        <springdoc-openapi.version><%= SPRINGDOC_OPENAPI_VERSION %></springdoc-openapi.version>
 
-        <spotless.version><%= MAVEN_SPOTLESS_PLUGIN_VERSION %>
-        </spotless.version>
-        <sonar-maven-plugin.version><%= MAVEN_SONAR_PLUGIN_VERSION %>
-        </sonar-maven-plugin.version>
-        <jacoco-maven-plugin.version><%= MAVEN_JACOCO_PLUGIN_VERSION %>
-        </jacoco-maven-plugin.version>
+        <spotless.version><%= MAVEN_SPOTLESS_PLUGIN_VERSION %></spotless.version>
+        <sonar-maven-plugin.version><%= MAVEN_SONAR_PLUGIN_VERSION %></sonar-maven-plugin.version>
+        <jacoco-maven-plugin.version><%= MAVEN_JACOCO_PLUGIN_VERSION %></jacoco-maven-plugin.version>
+        <jib-maven-plugin.version><%= MAVEN_JIB_PLUGIN_VERSION %></jib-maven-plugin.version>
+        <properties-maven-plugin.version><%= MAVEN_PROPERTIES_PLUGIN_VERSION %></properties-maven-plugin.version>
 
-        <jacoco.minimum.coverage><%= JACOCO_MIN_COVERAGE_REQUIRED %>
-        </jacoco.minimum.coverage>
-        <sonar.exclusions>src/main/java/**/config/*.*</sonar.exclusions>
-        <sonar.test.inclusions>**/*Test.java,**/*IntegrationTest.java,**/*IT.java</sonar.test.inclusions>
-        <sonar.junit.reportPaths>target/surefire-reports,target/failsafe-reports</sonar.junit.reportPaths>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-        <sonar.coverage.jacoco.xmlReportPaths>target/site/**/jacoco*.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <jacoco.minimum.coverage><%= JACOCO_MIN_COVERAGE_REQUIRED %></jacoco.minimum.coverage>
+        <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
+        <jib-maven-plugin.image><%= JAVA_IMAGE %></jib-maven-plugin.image>
     </properties>
 
     <dependencies>
@@ -143,7 +125,6 @@
         </dependency>
         <%_ } _%>
 
-        <!-- Monitor -->
         <%_ if (loggingType === 'loki') { _%>
         <dependency>
             <groupId>com.github.loki4j</groupId>
@@ -152,6 +133,7 @@
         </dependency>
         <%_ } _%>
         <%_ if (features.includes('monitor')) { _%>
+        <!-- Monitor -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -192,11 +174,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
         </dependency>
 
         <dependency>
@@ -378,6 +355,34 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>${jib-maven-plugin.image}</image>
+                        <platforms>
+                            <platform>
+                                <architecture>${jib-maven-plugin.architecture}</architecture>
+                                <os>linux</os>
+                            </platform>
+                        </platforms>
+                    </from>
+                    <to>
+                        <image>${env.USER}/${project.artifactId}</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                    </container>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
@@ -472,6 +477,24 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>${properties-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>sonar-project.properties</file>
+                            </files>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -1,8 +1,6 @@
-package
+package <%=packageName%>.aop;
 
-<%=packageName%>.config.aop;
-
-import <%=packageName%>.util.AppConstants;
+import <%=packageName%>.config.AppConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,7 +14,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
-@Component
 @Aspect
 public class LoggingAspect {
     private final Environment env;
@@ -27,9 +24,6 @@ public class LoggingAspect {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Pointcut that matches all repositories, services and Web REST endpoints.
-     */
     @Pointcut("within(@org.springframework.stereotype.Repository *)"
             + " || within(@org.springframework.stereotype.Service *)"
             + " || within(@org.springframework.web.bind.annotation.RestController *)")
@@ -38,9 +32,6 @@ public class LoggingAspect {
         // advices.
     }
 
-    /**
-     * Pointcut that matches all Spring beans in the application's main packages.
-     */
     @Pointcut("within(<%= packageName %>..*.*Repository)" + " || within(<%= packageName %>..*.*Service)"
             + " || within(<%= packageName %>..*.*Controller)")
     public void applicationPackagePointcut() {
@@ -48,22 +39,10 @@ public class LoggingAspect {
         // advices.
     }
 
-    /**
-     * Retrieves the {@link Logger} associated to the given {@link JoinPoint}.
-     *
-     * @param joinPoint join point we want the logger for.
-     * @return {@link Logger} associated to the given {@link JoinPoint}.
-     */
     private Logger logger(JoinPoint joinPoint) {
         return LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringTypeName());
     }
 
-    /**
-     * Advice that logs methods throwing exceptions.
-     *
-     * @param joinPoint join point for advice.
-     * @param e         exception.
-     */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         if (env.acceptsProfiles(Profiles.of(AppConstants.PROFILE_NOT_PROD))) {
@@ -76,13 +55,6 @@ public class LoggingAspect {
         }
     }
 
-    /**
-     * Advice that logs when a method is entered and exited.
-     *
-     * @param joinPoint join point for advice.
-     * @return result.
-     * @throws Throwable throws {@link IllegalArgumentException}.
-     */
     @Around("applicationPackagePointcut() && springBeanPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Logger log = logger(joinPoint);

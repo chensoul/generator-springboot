@@ -101,6 +101,7 @@ module.exports = class extends BaseGenerator {
     _generateMavenConfig(configOptions) {
         this._copyMavenWrapper(configOptions);
         this._generateMavenPOMXml(configOptions);
+        this.fs.copyTpl(this.templatePath('app/sonar-project.properties'), this.destinationPath('sonar-project.properties'), configOptions);
     }
 
     _generateGradleConfig(configOptions) {
@@ -183,16 +184,19 @@ module.exports = class extends BaseGenerator {
     _generateAppCode(configOptions) {
 
         const mainJavaTemplates = [
-             {src: 'Application.java', dest: configOptions.appVarName+'Application.java'},
-            'config/WebMvcConfig.java',
+            {src: 'Application.java', dest: configOptions.appVarName+'Application.java'},
+            'aop/LoggingAspect.java',
+            'config/ApplicationProperties.java',
+            'config/AppConstants.java',
+            'config/AsyncConfig.java',
+            'config/DatabaseConfig.java',
+            'config/LoggingAspectConfig.java',
             'config/JacksonConfig.java',
             'config/SpringdocConfig.java',
-            'config/ApplicationProperties.java',
             'config/Initializer.java',
             'config/GlobalExceptionHandler.java',
-            'config/aop/LoggingAspect.java',
+            'config/WebConfigurer.java',
             'exception/ResourceNotFoundException.java',
-            'util/AppConstants.java',
             'util/PageUtils.java',
         ];
 
@@ -203,10 +207,6 @@ module.exports = class extends BaseGenerator {
         if(configOptions.features.includes("monitor")) {
             mainJavaTemplates.push('config/MetricConfig.java');
             mainJavaTemplates.push('util/AggravateMetricsEndpoint.java');
-        }
-
-        if(configOptions.persistence === "mybatis") {
-            mainJavaTemplates.push('config/MybatisPlusConfig.java');
         }
 
         this.generateMainJavaCode(configOptions, mainJavaTemplates);
@@ -300,7 +300,8 @@ module.exports = class extends BaseGenerator {
     _generateAppDockerComposeFile(configOptions) {
         const resTemplates = [
             'docker-compose.yml',
-            'docker-compose-app.yml'
+            'docker-compose-app.yml',
+            'docker-compose-sonar.yml'
         ];
         this.generateFiles(configOptions, resTemplates, 'app/','./');
     }

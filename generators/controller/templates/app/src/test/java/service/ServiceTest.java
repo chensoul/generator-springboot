@@ -9,7 +9,7 @@ import static org.mockito.BDDMockito.willDoNothing;
 
 import <%= packageName %>.entity.<%= entityName %>;
 import <%= packageName %>.mapper.<%= entityName %>Mapper;
-import <%= packageName %>.model.query.Find<%= entityName %>Query;
+import <%= packageName %>.model.query.<%= entityName %>Query;
 import <%= packageName %>.model.response.<%= entityName %>Response;
 import <%= packageName %>.model.response.PagedResult;
 import <%= packageName %>.repository.<%= entityName %>Repository;

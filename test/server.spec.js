@@ -11,7 +11,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "buildTool": "maven",
                     "features": []
@@ -30,7 +30,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "databaseType": "postgresql",
                     "dbMigrationTool": "flywaydb",
@@ -51,7 +51,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "databaseType": "postgresql",
                     "dbMigrationTool": "liquibase",
@@ -72,7 +72,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "databaseType": "postgresql",
                     "dbMigrationTool": "flywaydb",
@@ -97,7 +97,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "buildTool": "gradle",
                     "features": []
@@ -116,7 +116,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "databaseType": "postgresql",
                     "dbMigrationTool": "flywaydb",
@@ -138,7 +138,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "databaseType": "postgresql",
                     "dbMigrationTool": "liquibase",
@@ -160,7 +160,7 @@ describe('SpringBoot Generator', () => {
                 .run(path.join(__dirname, '../generators/server'))
                 .withPrompts({
                     "appName": "myservice",
-                    "packageName": "com.mycompany",
+                    "packageName": "com.mycompany.myapp",
                     "packageFolder": "com/mycompany/myservice",
                     "databaseType": "postgresql",
                     "dbMigrationTool": "flywaydb",

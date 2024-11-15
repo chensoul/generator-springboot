@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -28,14 +27,14 @@ public interface PageUtils {
     }
 
     <%_ if (persistence === "mybatis") { _%>
-    static com.baomidou.mybatisplus.extension.plugins.pagination.Page fromPageRequest(PageRequest pageRequest) {
+    static com.baomidou.mybatisplus.extension.plugins.pagination.Page fromPageRequest(Pageable pageable) {
         com.baomidou.mybatisplus.extension.plugins.pagination.Page page =
                 com.baomidou.mybatisplus.extension.plugins.pagination.Page.of(
-                        pageRequest.getPageNumber() + 1, pageRequest.getPageSize(), true);
+                        pageable.getPageNumber() + 1, pageable.getPageSize(), true);
         page.setOptimizeCountSql(false);
 
-        if (pageRequest.getSort() != null && pageRequest.getSort().isSorted()) {
-            page.setOrders(pageRequest.getSort().stream()
+        if (pageable.getSort() != null && pageable.getSort().isSorted()) {
+            page.setOrders(pageable.getSort().stream()
                     .map(order -> order.getDirection().equals(Sort.Direction.ASC)
                             ? OrderItem.asc(order.getProperty())
                             : OrderItem.desc(order.getProperty()))

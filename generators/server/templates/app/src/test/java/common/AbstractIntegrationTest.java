@@ -1,6 +1,6 @@
 package <%= packageName %>.common;
 
-import static <%= packageName %>.util.AppConstants.PROFILE_TEST;
+import static <%= packageName %>.config.AppConstants.PROFILE_TEST;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

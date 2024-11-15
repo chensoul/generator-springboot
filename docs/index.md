@@ -44,7 +44,7 @@ After installing the `generator-springboot`, you can generate a new Spring Boot 
 $ yo springboot
 Generating SpringBoot Application
 ? What is the application name? myservice
-? What is the default package name? com.mycompany
+? What is the default package name? com.mycompany.myapp
 ? Which type of database you want to use? Postgresql
 ? Which type of database migration tool you want to use? FlywayDB
 ? Which type of logging tool you want to use? ELK Docker configuration
@@ -107,7 +107,7 @@ Generating SpringBoot Application
 No change to package.json was detected. No package manager install will be executed.
 [INFO] Scanning for projects...
 [INFO]
-[INFO] -----------------< com.mycompany:myservice >------------------
+[INFO] -----------------< com.mycompany.myapp:myservice >------------------
 [INFO] Building myservice 0.0.1-SNAPSHOT
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -180,7 +180,7 @@ EntityName: Customer, basePath: /api/customers
 No change to package.json was detected. No package manager install will be executed.
 [INFO] Scanning for projects...
 [INFO]
-[INFO] -----------------< com.mycompany:myservice >------------------
+[INFO] -----------------< com.mycompany.myapp:myservice >------------------
 [INFO] Building myservice 0.0.1-SNAPSHOT
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
