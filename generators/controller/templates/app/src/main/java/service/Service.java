@@ -44,7 +44,7 @@ public class <%= entityName %>Service extends ServiceImpl<<%= entityName %>Repos
         <%_ if (persistence === 'mybatis') { _%>
         IPage<<%= entityName %>> <%= entityVarName %>Page = page(PageUtils.fromPageRequest(<%= entityVarName %>Query.pageable()));
         List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toResponseList(<%= entityVarName %>Page.getRecords());
-        return new PageImpl(<%= entityVarName %>ResponseList, <%= entityVarName %>Query.pageable(), <%= entityVarName %>Page.getTotal());
+        return new PageImpl<>(<%= entityVarName %>ResponseList, <%= entityVarName %>Query.pageable(), <%= entityVarName %>Page.getTotal());
         <%_ } _%>
     }
 

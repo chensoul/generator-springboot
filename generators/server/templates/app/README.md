@@ -2,6 +2,43 @@
 
 This project was created with [generator-springboot](https://github.com/chensoul/generator-springboot/).
 
+## Feature
+
+- JDK：<%= JAVA_VERSION %>
+<%_ if (buildTool === 'maven') { _%>
+- Maven：<%= MAVEN_VERSION %>
+<%_ } _%>
+<%_ if (buildTool === 'gradle') { _%>
+- Gradle：<%= GRADLE_VERSION %>
+<%_ } _%>
+- Spring Boot：<%= SPRING_BOOT_VERSION %>
+- Spring Cloud：<%= SPRING_CLOUD_VERSION %>
+<%_ if (databaseType === 'postgresql') { _%>
+- Postgres：<%= POSTGRESQL_IMAGE_VERSION %>
+<%_ } _%>
+<%_ if (databaseType === 'mysql') { _%>
+- MySQL：<%= MYSQL_IMAGE_VERSION %>
+<%_ } _%>
+<%_ if (databaseType === 'mariadb') { _%>
+- Mariadb：<%= MARIADB_IMAGE_VERSION %>
+<%_ } _%>
+<%_ if (persistence === 'mybatis') { _%>
+- Mybatis plus：<%= MYBATIS_PLUS_VERSION %>
+<%_ } _%>
+<%_ if (dbMigrationTool === 'flywaydb') { _%>
+- Flywaydb
+<%_ } _%>
+<%_ if (dbMigrationTool === 'liquibase') { _%>
+- Liquibase
+<%_ } _%>
+- Springdoc：<%= SPRINGDOC_OPENAPI_VERSION %>
+<%_ if (loggingType === 'elk' ) { _%>
+- ELK：<%= ES_IMAGE_VERSION %>
+<%_ } _%>
+<%_ if (features.includes('monitor')) { _%>
+- Grafana：<%= GRAFANA_IMAGE_VERSION %>
+<%_ } _%>
+
 ## Build
 
 The application can be built using the following command:

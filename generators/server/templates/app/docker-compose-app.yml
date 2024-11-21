@@ -28,6 +28,6 @@ services:
       <%_ if (features.includes('zipkin')) { _%>
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://zipkin:9411/api/v2/spans
       <%_ } _%>
-      <%_ if (features.includes('tempo')) { _%>
+      <%_ if (features.includes('monitor')) { _%>
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411/api/v2/spans
       <%_ } _%>
