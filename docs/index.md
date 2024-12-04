@@ -208,7 +208,7 @@ No change to package.json was detected. No package manager install will be execu
 ## Local Development Setup
 
 ```shell
-$ git clone https://github.com/sivaprasadreddy/generator-springboot.git
+$ git clone https://github.com/chensoul/generator-springboot.git
 $ cd generator-springboot
 $ npm install -g yo
 $ npm install 
