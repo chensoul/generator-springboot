@@ -23,7 +23,7 @@ $ yo springboot
 The generator-springboot generates a Spring Boot application with the following features configured:
 
 * Spring Boot project with Maven and Gradle support
-* Persistence databases like MySQL, Postgresql, MariaDB with **Spring Data JPA** or **Mybatis Plus**
+* Persistence databases like MySQL, PostgreSQL, MariaDB with **Spring Data JPA** or **Mybatis Plus**
 * Flyway and Liquibase database migration support
 * CORS configuration
 * SpringDoc OpenAPI Integration
@@ -46,7 +46,7 @@ $ yo springboot
 Generating SpringBoot Application
 ? What is the application name? myservice
 ? What is the default package name? com.mycompany.myapp
-? Which type of database you want to use? Postgresql
+? Which type of database you want to use? PostgreSQL
 ? Which type of database migration tool you want to use? FlywayDB
 ? Which type of logging tool you want to use? ELK Docker configuration
 ? Which type of trace tool you want to use? Zipkin Docker configuration

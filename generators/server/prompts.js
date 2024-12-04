@@ -35,7 +35,7 @@ function prompting() {
             choices: [
                 {
                     value: 'postgresql',
-                    name: 'Postgresql'
+                    name: 'PostgreSQL'
                 },
                 {
                     value: 'mysql',
