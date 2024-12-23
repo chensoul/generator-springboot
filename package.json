@@ -32,7 +32,7 @@
     "lodash": "4.17.21",
     "shelljs": "0.8.5",
     "yeoman-environment": "4.4.3",
-    "yeoman-generator": "7.3.3"
+    "yeoman-generator": "7.4.0"
   },
   "devDependencies": {
     "chai": "5.1.2",
